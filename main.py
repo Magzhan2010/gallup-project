@@ -235,3 +235,82 @@ model.fit(X, Y)  # обучаем: ответы → баллы талантов
 print(f"\nМодель обучена!")
 print(f"Размер весов: {model.coef_.shape}")  # должно быть (34, 200)
 print(f"Веса — это 34 таланта × 200 вопросов = {34 * 200} чисел")
+
+# ============================================
+# АСПЕКТ 3 (часть 2): Проверка точности модели
+# ============================================
+
+from scipy.stats import spearmanr
+
+# --- 1. ПРЕДСКАЗЫВАЕМ БАЛЛЫ ТАЛАНТОВ ---
+
+predicted_scores = model.predict(X)  # модель предсказывает баллы для всех 11 людей
+print(f"Предсказанные баллы: {predicted_scores.shape[0]} человек × {predicted_scores.shape[1]} талантов")
+
+
+# --- 2. ПРЕВРАЩАЕМ ПРЕДСКАЗАННЫЕ БАЛЛЫ В РАНЖИРОВКИ ---
+
+# Для каждого человека: сортируем таланты по баллам (от большего к меньшему)
+predicted_rankings = {}
+
+for i, name in enumerate(names):
+    # Берём баллы 34 талантов для этого человека
+    person_scores = predicted_scores[i]
+    # Сортируем: индексы талантов по убыванию баллов
+    sorted_indices = np.argsort(-person_scores)
+    # Создаём ранжировку: список названий талантов по порядку
+    ranking = [all_talents[idx] for idx in sorted_indices]
+    predicted_rankings[name] = ranking
+
+
+# --- 3. СРАВНИВАЕМ С РЕАЛЬНОЙ РАНЖИРОВКОЙ (SPEARMAN) ---
+
+print("\n" + "=" * 60)
+print("РЕЗУЛЬТАТЫ: Точность модели по Спирмену")
+print("=" * 60)
+
+all_rho = []  # сюда соберём корреляции всех людей
+
+for name in names:
+    real_ranking = gallup_rankings[name]        # реальная ранжировка Gallup
+    pred_ranking = predicted_rankings[name]     # наша предсказанная ранжировка
+    
+    # Считаем Spearman
+    rho, p_value = spearmanr(real_ranking, pred_ranking)
+    all_rho.append(rho)
+    
+    # Переводим в проценты
+    percent = rho * 100
+    
+    # Топ-5 реальный vs предсказанный
+    real_top5 = real_ranking[:5]
+    pred_top5 = pred_ranking[:5]
+    
+    print(f"\n{name}:")
+    print(f"  Spearman = {rho:.4f} ({percent:.1f}%)")
+    print(f"  Реальный топ-5:    {real_top5}")
+    print(f"  Предсказанный топ-5: {pred_top5}")
+    
+    # Сколько из топ-5 совпало
+    matches = len(set(real_top5) & set(pred_top5))
+    print(f"  Совпадений в топ-5: {matches}/5")
+
+
+# --- 4. СРЕДНЯЯ ТОЧНОСТЬ ---
+
+print("\n" + "=" * 60)
+mean_rho = np.mean(all_rho)
+mean_percent = mean_rho * 100
+print(f"СРЕДНЯЯ ТОЧНОСТЬ: {mean_rho:.4f} ({mean_percent:.1f}%)")
+print(f"Минимум: {min(all_rho):.4f} ({min(all_rho)*100:.1f}%)")
+print(f"Максимум: {max(all_rho):.4f} ({max(all_rho)*100:.1f}%)")
+print("=" * 60)
+
+if mean_percent >= 96:
+    print("ЦЕЛЬ ДОСТИГНУТА! Точность 96%+")
+elif mean_percent >= 90:
+    print("Хороший результат! Нужно немного докрутить.")
+elif mean_percent >= 80:
+    print("Неплохо для начала. Попробуем другие параметры.")
+else:
+    print("Нужно работать над моделью. Попробуем другие подходы.")
