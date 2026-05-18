@@ -1,6 +1,13 @@
 import pandas as pd
-# Аспект 1
-# Ответы всех 11 человек
+import numpy as np
+from sklearn.linear_model import Ridge
+from scipy.stats import spearmanr
+import joblib
+
+# ============================================
+# ДАННЫЕ: Ответы всех 11 человек
+# ============================================
+
 answers = {
     "Alexandr": [5,4,5,3,4,5,5,3,3,5,None,2,1,3,5,5,1,4,5,5,1,5,1,4,5,5,4,1,1,1,3,5,5,1,5,3,5,5,5,5,2,5,1,1,1,3,1,5,5,5,2,1,5,4,2,1,1,1,1,1,1,3,5,1,5,5,3,3,2,5,1,5,5,3,1,5,5,5,5,5,5,1,2,3,5,1,5,5,5,5,1,1,2,5,1,5,1,1,1,5,5,1,5,3,1,2,3,5,3,5,1,1,1,1,5,2,5,1,1,5,4,2,1,5,2,5,5,3,4,2,5,1,1,3,4,1,5,1,2,5,5,4,1,3,5,1,5,1,1,5,5,1,5,1,2,5,5,1,1,1,2,3,1,5,1,5,5,5,3,5,3,1,5,1,5,3,5,4,3,5,4,2,4,3,5,1,1,1,1,5,1,1,1,4,3,4,2,1,1,1],
     "Ardak": [None,5,2,2,2,4,4,5,4,2,2,2,5,1,5,5,4,5,2,1,1,1,1,5,1,5,2,5,3,1,4,5,1,5,5,1,4,4,4,5,4,5,1,1,1,4,2,1,2,4,1,4,1,4,4,1,1,1,1,5,4,5,5,1,5,5,5,1,3,4,2,5,5,4,2,4,4,5,1,5,5,1,2,1,4,1,1,5,1,5,1,1,2,5,2,3,2,1,1,2,5,5,1,4,1,5,4,2,4,5,4,1,1,1,5,4,2,1,1,5,2,1,4,4,1,3,4,2,4,4,4,5,1,5,5,1,4,2,2,1,5,2,4,5,2,1,4,2,1,4,5,None,4,3,1,1,5,1,2,3,2,3,1,5,2,5,4,1,5,5,2,3,4,4,4,5,4,1,1,5,2,1,2,2,5,1,4,1,2,4,5,1,2,1,4,2,5,1,1,2],
@@ -15,302 +22,118 @@ answers = {
     "Yerman": [4,5,2,3,2,5,4,1,5,3,3,1,3,2,5,3,3,3,1,5,1,1,2,5,2,3,3,4,2,1,3,2,3,5,5,1,2,3,5,5,1,5,5,1,4,4,3,3,3,2,5,3,3,5,5,1,3,1,1,3,1,4,4,3,4,2,1,2,3,4,1,5,4,3,3,2,5,2,3,5,2,3,4,1,2,4,1,2,3,2,4,5,1,2,3,3,2,3,2,2,3,3,4,3,2,5,5,3,4,4,3,4,3,1,3,5,3,2,1,3,2,4,1,3,1,1,4,4,4,5,4,5,3,4,3,2,3,3,1,2,4,5,2,3,2,5,1,1,3,5,5,2,3,1,3,3,5,2,2,3,1,3,1,4,3,3,4,3,3,5,1,4,5,5,5,2,3,2,3,5,1,3,1,3,5,2,1,1,3,2,3,3,1,1,1,3,1,3,5,3],
 }
 
-# Превращаем в таблицу
-df = pd.DataFrame(answers)
-
-# Показываем первые 10 строк
-print(df.head(199))  
-
-# ============================================
-# АСПЕКТ 2: Перевод ответов в баллы
-# ============================================
-
-# Функция: переводит ответ (1-5) в баллы (+2, +1, 0, -1, -2)
-def answer_to_scores(answer):
-    """
-    Переводит ответ человека в баллы для пары утверждений.
-    
-    answer = 5  →  (+2, -2)  первое утверждение точно я
-    answer = 4  →  (+1, -1)  первое ближе
-    answer = 3  →  (0,  0)   нейтрально
-    answer = 2  →  (-1, +1)  второе ближе
-    answer = 1  →  (-2, +2)  второе утверждение точно я
-    answer = None → (0, 0)   пропущенный вопрос = 0 баллов
-    """
-    if answer is None:
-        return (0, 0)
-    # Сдвигаем: 5→2, 4→1, 3→0, 2→-1, 1→-2
-    shift = answer - 3
-    return (shift, -shift)
-
-
-# Пример: проверяем на ответе Александра на вопрос 0 (он ответил 5)
-test_answer = answers["Alexandr"][0]  # = 5
-score_first, score_second = answer_to_scores(test_answer)
-print(f"Вопрос 0, ответ {test_answer}: первое = +{score_first}, второе = {score_second}")
-# Должно вывести: первое = +2, второе = -2
-
-
-# Переводим ВСЕ ответы ВСЕХ людей в баллы
-# Результат: словарь {имя: список пар баллов для каждого вопроса}
-scores = {}
-for name, person_answers in answers.items():
-    person_scores = []
-    for ans in person_answers:
-        person_scores.append(answer_to_scores(ans))
-    scores[name] = person_scores
-
-# Показываем первые 5 вопросов для Александра
-print("\nБаллы Александра (первые 5 вопросов):")
-for i in range(5):
-    s1, s2 = scores["Alexandr"][i]
-    ans = answers["Alexandr"][i]
-    print(f"  Вопрос {i}: ответ={ans} → первое={s1:+d}, второе={s2:+d}")
-
-
-# ============================================
-# АСПЕКТ 3: Автоматическая привязка через Ridge-регрессию
-# ============================================
-
-import numpy as np
-from sklearn.linear_model import Ridge
-
-# --- 1. РЕАЛЬНЫЕ РЕЗУЛЬТАТЫ GALLUP (ранжировки) ---
-
-# Ранжировка каждого человека: первое имя = самый сильный талант (ранг 1)
+# Реальные ранжировки Gallup
 gallup_rankings = {
-    "Togzhan": [
-        "Empathy","Developer","Connectedness","Belief","Achiever","Context","Relator",
-        "Responsibility","Individualization","Arranger","Positivity","Intellection",
-        "Learner","Maximizer","Deliberative","Discipline","Harmony","Strategic","Focus",
-        "Input","Adaptability","Consistency","Self-Assurance","Ideation","Analytical",
-        "Restorative","Communication","Activator","Significance","Futuristic","Includer",
-        "Woo","Competition","Command"
-    ],
-    "Ardak": [
-        "Communication","Strategic","Responsibility","Analytical","Focus","Restorative",
-        "Significance","Woo","Relator","Arranger","Belief","Futuristic","Ideation",
-        "Consistency","Individualization","Positivity","Deliberative","Activator",
-        "Includer","Learner","Harmony","Context","Discipline","Connectedness","Empathy",
-        "Achiever","Input","Maximizer","Developer","Self-Assurance","Competition",
-        "Command","Intellection","Adaptability"
-    ],
-    "Aymatay": [
-        "Communication","Consistency","Woo","Adaptability","Positivity","Achiever",
-        "Harmony","Responsibility","Restorative","Focus","Discipline","Strategic",
-        "Relator","Significance","Learner","Competition","Deliberative","Input",
-        "Self-Assurance","Includer","Futuristic","Developer","Activator","Arranger",
-        "Analytical","Individualization","Command","Maximizer","Context","Empathy",
-        "Belief","Ideation","Connectedness","Intellection"
-    ],
-    "Madina": [
-        "Consistency","Communication","Responsibility","Woo","Analytical","Includer",
-        "Discipline","Achiever","Harmony","Deliberative","Positivity","Empathy",
-        "Self-Assurance","Focus","Belief","Developer","Restorative","Activator",
-        "Maximizer","Context","Adaptability","Learner","Futuristic","Intellection",
-        "Input","Command","Relator","Significance","Competition","Strategic",
-        "Connectedness","Arranger","Ideation","Individualization"
-    ],
-    "Alexandr": [
-        "Strategic","Analytical","Learner","Focus","Individualization","Communication",
-        "Ideation","Arranger","Restorative","Responsibility","Achiever","Context",
-        "Deliberative","Discipline","Self-Assurance","Intellection","Includer","Futuristic",
-        "Consistency","Command","Input","Woo","Relator","Connectedness","Harmony",
-        "Competition","Maximizer","Activator","Significance","Belief","Adaptability",
-        "Empathy","Developer","Positivity"
-    ],
-    "Bagzhan": [
-        "Competition","Strategic","Woo","Achiever","Communication","Focus","Responsibility",
-        "Learner","Positivity","Analytical","Significance","Adaptability","Includer",
-        "Futuristic","Harmony","Discipline","Restorative","Consistency","Context","Input",
-        "Self-Assurance","Intellection","Relator","Belief","Empathy","Developer","Activator",
-        "Individualization","Deliberative","Ideation","Command","Connectedness","Arranger","Maximizer"
-    ],
-    "Kassym": [
-        "Responsibility","Arranger","Activator","Achiever","Belief","Maximizer",
-        "Connectedness","Woo","Communication","Focus","Command","Individualization",
-        "Discipline","Significance","Learner","Competition","Context","Self-Assurance",
-        "Positivity","Ideation","Analytical","Input","Intellection","Strategic",
-        "Restorative","Futuristic","Developer","Relator","Harmony","Deliberative",
-        "Includer","Empathy","Adaptability","Consistency"
-    ],
-    "Mansur": [
-        "Responsibility","Relator","Communication","Woo","Harmony","Empathy","Positivity",
-        "Learner","Belief","Developer","Futuristic","Maximizer","Command","Context",
-        "Deliberative","Adaptability","Includer","Analytical","Restorative","Focus",
-        "Self-Assurance","Significance","Arranger","Activator","Strategic","Consistency",
-        "Individualization","Input","Competition","Discipline","Ideation","Connectedness",
-        "Intellection","Achiever"
-    ],
-    "Meyirzhan": [
-        "Competition","Harmony","Woo","Adaptability","Activator","Positivity","Input",
-        "Significance","Intellection","Communication","Connectedness","Maximizer","Context",
-        "Self-Assurance","Focus","Empathy","Individualization","Consistency","Deliberative",
-        "Ideation","Command","Developer","Arranger","Restorative","Relator","Belief",
-        "Includer","Achiever","Responsibility","Discipline","Learner","Futuristic",
-        "Strategic","Analytical"
-    ],
-    "Nurbibi": [
-        "Includer","Maximizer","Adaptability","Harmony","Empathy","Relator","Connectedness",
-        "Competition","Communication","Input","Analytical","Context","Discipline",
-        "Self-Assurance","Activator","Futuristic","Individualization","Achiever",
-        "Significance","Positivity","Command","Woo","Strategic","Responsibility","Learner",
-        "Belief","Focus","Ideation","Developer","Consistency","Deliberative","Arranger",
-        "Intellection","Restorative"
-    ],
-    "Yerman": [
-        "Woo","Communication","Strategic","Individualization","Analytical","Significance",
-        "Focus","Restorative","Command","Achiever","Developer","Ideation","Consistency",
-        "Empathy","Positivity","Responsibility","Arranger","Futuristic","Self-Assurance",
-        "Competition","Connectedness","Activator","Discipline","Belief","Input","Includer",
-        "Relator","Harmony","Adaptability","Intellection","Maximizer","Context",
-        "Deliberative","Learner"
-    ],
+    "Togzhan": ["Empathy","Developer","Connectedness","Belief","Achiever","Context","Relator","Responsibility","Individualization","Arranger","Positivity","Intellection","Learner","Maximizer","Deliberative","Discipline","Harmony","Strategic","Focus","Input","Adaptability","Consistency","Self-Assurance","Ideation","Analytical","Restorative","Communication","Activator","Significance","Futuristic","Includer","Woo","Competition","Command"],
+    "Ardak": ["Communication","Strategic","Responsibility","Analytical","Focus","Restorative","Significance","Woo","Relator","Arranger","Belief","Futuristic","Ideation","Consistency","Individualization","Positivity","Deliberative","Activator","Includer","Learner","Harmony","Context","Discipline","Connectedness","Empathy","Achiever","Input","Maximizer","Developer","Self-Assurance","Competition","Command","Intellection","Adaptability"],
+    "Aymatay": ["Communication","Consistency","Woo","Adaptability","Positivity","Achiever","Harmony","Responsibility","Restorative","Focus","Discipline","Strategic","Relator","Significance","Learner","Competition","Deliberative","Input","Self-Assurance","Includer","Futuristic","Developer","Activator","Arranger","Analytical","Individualization","Command","Maximizer","Context","Empathy","Belief","Ideation","Connectedness","Intellection"],
+    "Madina": ["Consistency","Communication","Responsibility","Woo","Analytical","Includer","Discipline","Achiever","Harmony","Deliberative","Positivity","Empathy","Self-Assurance","Focus","Belief","Developer","Restorative","Activator","Maximizer","Context","Adaptability","Learner","Futuristic","Intellection","Input","Command","Relator","Significance","Competition","Strategic","Connectedness","Arranger","Ideation","Individualization"],
+    "Alexandr": ["Strategic","Analytical","Learner","Focus","Individualization","Communication","Ideation","Arranger","Restorative","Responsibility","Achiever","Context","Deliberative","Discipline","Self-Assurance","Intellection","Includer","Futuristic","Consistency","Command","Input","Woo","Relator","Connectedness","Harmony","Competition","Maximizer","Activator","Significance","Belief","Adaptability","Empathy","Developer","Positivity"],
+    "Bagzhan": ["Competition","Strategic","Woo","Achiever","Communication","Focus","Responsibility","Learner","Positivity","Analytical","Significance","Adaptability","Includer","Futuristic","Harmony","Discipline","Restorative","Consistency","Context","Input","Self-Assurance","Intellection","Relator","Belief","Empathy","Developer","Activator","Individualization","Deliberative","Ideation","Command","Connectedness","Arranger","Maximizer"],
+    "Kassym": ["Responsibility","Arranger","Activator","Achiever","Belief","Maximizer","Connectedness","Woo","Communication","Focus","Command","Individualization","Discipline","Significance","Learner","Competition","Context","Self-Assurance","Positivity","Ideation","Analytical","Input","Intellection","Strategic","Restorative","Futuristic","Developer","Relator","Harmony","Deliberative","Includer","Empathy","Adaptability","Consistency"],
+    "Mansur": ["Responsibility","Relator","Communication","Woo","Harmony","Empathy","Positivity","Learner","Belief","Developer","Futuristic","Maximizer","Command","Context","Deliberative","Adaptability","Includer","Analytical","Restorative","Focus","Self-Assurance","Significance","Arranger","Activator","Strategic","Consistency","Individualization","Input","Competition","Discipline","Ideation","Connectedness","Intellection","Achiever"],
+    "Meyirzhan": ["Competition","Harmony","Woo","Adaptability","Activator","Positivity","Input","Significance","Intellection","Communication","Connectedness","Maximizer","Context","Self-Assurance","Focus","Empathy","Individualization","Consistency","Deliberative","Ideation","Command","Developer","Arranger","Restorative","Relator","Belief","Includer","Achiever","Responsibility","Discipline","Learner","Futuristic","Strategic","Analytical"],
+    "Nurbibi": ["Includer","Maximizer","Adaptability","Harmony","Empathy","Relator","Connectedness","Competition","Communication","Input","Analytical","Context","Discipline","Self-Assurance","Activator","Futuristic","Individualization","Achiever","Significance","Positivity","Command","Woo","Strategic","Responsibility","Learner","Belief","Focus","Ideation","Developer","Consistency","Deliberative","Arranger","Intellection","Restorative"],
+    "Yerman": ["Woo","Communication","Strategic","Individualization","Analytical","Significance","Focus","Restorative","Command","Achiever","Developer","Ideation","Consistency","Empathy","Positivity","Responsibility","Arranger","Futuristic","Self-Assurance","Competition","Connectedness","Activator","Discipline","Belief","Input","Includer","Relator","Harmony","Adaptability","Intellection","Maximizer","Context","Deliberative","Learner"],
 }
 
-# Все 34 таланта (по алфавиту, чтобы порядок был постоянным)
+# ============================================
+# ОБУЧЕНИЕ МОДЕЛИ
+# ============================================
+
+# Все 34 таланта по алфавиту
 all_talents = sorted(set(t for ranking in gallup_rankings.values() for t in ranking))
-print(f"Всего талантов: {len(all_talents)}")
-print(f"Таланты: {all_talents}")
+names = list(gallup_rankings.keys())
 
-# ============================================
-# АСПЕКТ 3 (продолжение): Обучение Ridge-регрессии
-# ============================================
-
-# --- 2. ПРЕВРАЩАЕМ РАНЖИРОВКИ В БАЛЛЫ ---
-
-# Ранг 1 = самый сильный талант = 34 балла
-# Ранг 34 = самый слабый = 1 балл
-# Формула: балл = 35 - ранг
-
-def ranking_to_scores(ranking, all_talents):
-    """
-    Превращает ранжировку (список талантов по порядку) в словарь баллов.
-    Талант на 1-м месте получает 34 балла, на 34-м месте — 1 балл.
-    """
-    scores = {}
-    for rank, talent in enumerate(ranking, start=1):
-        scores[talent] = 35 - rank  # ранг 1 → 34 балла, ранг 34 → 1 балл
-    return scores
-
-# Создаём таблицу: строки = люди, столбцы = 34 таланта, значения = баллы
-import numpy as np
-
-names = list(gallup_rankings.keys())  # список имён
-Y = []  # матрица баллов (11 человек × 34 таланта)
-
+# Y: матрица баллов талантов (ранг 1 = 34 балла, ранг 34 = 1 балл)
+Y = []
 for name in names:
-    talent_scores = ranking_to_scores(gallup_rankings[name], all_talents)
-    row = [talent_scores[t] for t in all_talents]
-    Y.append(row)
-
+    row = []
+    for rank, talent in enumerate(gallup_rankings[name], start=1):
+        row.append((35 - rank))
+    # Упорядочиваем по all_talents
+    scores_dict = {t: s for t, s in zip(gallup_rankings[name], row)}
+    Y.append([scores_dict[t] for t in all_talents])
 Y = np.array(Y)
 
-print(f"Матрица Y: {Y.shape[0]} человек × {Y.shape[1]} талантов")
-print(f"Пример (Александр, первые 5 талантов):")
-for i in range(5):
-    print(f"  {all_talents[i]}: {Y[names.index('Alexandr')][i]} баллов")
-
-
-# --- 3. СОЗДАЁМ МАТРИЦУ ОТВЕТОВ (X) ---
-
-# X: строки = люди, столбцы = 200 ответов
+# X: матрица ответов (None = 3)
 X = []
 for name in names:
-    person_answers = answers[name]
-    # Превращаем None в 3 (нейтрально) для ML
-    clean_answers = [3 if a is None else a for a in person_answers]
-    X.append(clean_answers)
-
+    clean = [3 if a is None else a for a in answers[name]]
+    X.append(clean)
 X = np.array(X)
 
-print(f"\nМатрица X: {X.shape[0]} человек × {X.shape[1]} вопросов")
-
-
-# --- 4. ОБУЧАЕМ RIDGE-РЕГРЕССИЮ ---
-
-model = Ridge(alpha=10.0)  # alpha = сила регуляризации
-model.fit(X, Y)  # обучаем: ответы → баллы талантов
-
-print(f"\nМодель обучена!")
-print(f"Размер весов: {model.coef_.shape}")  # должно быть (34, 200)
-print(f"Веса — это 34 таланта × 200 вопросов = {34 * 200} чисел")
+# Обучаем Ridge-регрессию
+model = Ridge(alpha=10.0)
+model.fit(X, Y)
 
 # ============================================
-# АСПЕКТ 3 (часть 2): Проверка точности модели
+# ПРОВЕРКА ТОЧНОСТИ (Spearman)
 # ============================================
 
-from scipy.stats import spearmanr
+predicted_scores = model.predict(X)
 
-# --- 1. ПРЕДСКАЗЫВАЕМ БАЛЛЫ ТАЛАНТОВ ---
-
-predicted_scores = model.predict(X)  # модель предсказывает баллы для всех 11 людей
-print(f"Предсказанные баллы: {predicted_scores.shape[0]} человек × {predicted_scores.shape[1]} талантов")
-
-
-# --- 2. ПРЕВРАЩАЕМ ПРЕДСКАЗАННЫЕ БАЛЛЫ В РАНЖИРОВКИ ---
-
-# Для каждого человека: сортируем таланты по баллам (от большего к меньшему)
-predicted_rankings = {}
-
-for i, name in enumerate(names):
-    # Берём баллы 34 талантов для этого человека
-    person_scores = predicted_scores[i]
-    # Сортируем: индексы талантов по убыванию баллов
-    sorted_indices = np.argsort(-person_scores)
-    # Создаём ранжировку: список названий талантов по порядку
-    ranking = [all_talents[idx] for idx in sorted_indices]
-    predicted_rankings[name] = ranking
-
-
-# --- 3. СРАВНИВАЕМ С РЕАЛЬНОЙ РАНЖИРОВКОЙ (SPEARMAN) ---
-
-print("\n" + "=" * 60)
+print("=" * 60)
 print("РЕЗУЛЬТАТЫ: Точность модели по Спирмену")
 print("=" * 60)
 
-all_rho = []  # сюда соберём корреляции всех людей
+all_rho = []
 
-for name in names:
-    real_ranking = gallup_rankings[name]        # реальная ранжировка Gallup
-    pred_ranking = predicted_rankings[name]     # наша предсказанная ранжировка
-    
-    # Считаем Spearman
-    rho, p_value = spearmanr(real_ranking, pred_ranking)
+for i, name in enumerate(names):
+    # Предсказанная ранжировка
+    sorted_indices = np.argsort(-predicted_scores[i])
+    pred_ranking = [all_talents[idx] for idx in sorted_indices]
+
+    # Сравниваем с реальной
+    rho, _ = spearmanr(gallup_rankings[name], pred_ranking)
     all_rho.append(rho)
-    
-    # Переводим в проценты
-    percent = rho * 100
-    
-    # Топ-5 реальный vs предсказанный
-    real_top5 = real_ranking[:5]
+
+    real_top5 = gallup_rankings[name][:5]
     pred_top5 = pred_ranking[:5]
-    
-    print(f"\n{name}:")
-    print(f"  Spearman = {rho:.4f} ({percent:.1f}%)")
-    print(f"  Реальный топ-5:    {real_top5}")
-    print(f"  Предсказанный топ-5: {pred_top5}")
-    
-    # Сколько из топ-5 совпало
     matches = len(set(real_top5) & set(pred_top5))
-    print(f"  Совпадений в топ-5: {matches}/5")
 
-
-# --- 4. СРЕДНЯЯ ТОЧНОСТЬ ---
+    print(f"\n{name}: Spearman = {rho:.4f} ({rho*100:.1f}%) | Топ-5 совпадений: {matches}/5")
+    print(f"  Реальный:       {real_top5}")
+    print(f"  Предсказанный:  {pred_top5}")
 
 print("\n" + "=" * 60)
 mean_rho = np.mean(all_rho)
-mean_percent = mean_rho * 100
-print(f"СРЕДНЯЯ ТОЧНОСТЬ: {mean_rho:.4f} ({mean_percent:.1f}%)")
-print(f"Минимум: {min(all_rho):.4f} ({min(all_rho)*100:.1f}%)")
-print(f"Максимум: {max(all_rho):.4f} ({max(all_rho)*100:.1f}%)")
+print(f"СРЕДНЯЯ ТОЧНОСТЬ: {mean_rho:.4f} ({mean_rho*100:.1f}%)")
+print(f"Минимум: {min(all_rho):.4f} | Максимум: {max(all_rho):.4f}")
+print("=" * 60)
+if mean_rho * 100 >= 96:
+    print("ЦЕЛЬ ДОСТИГНУТА! Точность 96%+")
+
+# ============================================
+# АСПЕКТ 4: Сохранение модели
+# ============================================
+
+joblib.dump(model, "gallup_model.pkl")
+joblib.dump(all_talents, "gallup_talents.pkl")
+print(f"\nМодель сохранена в gallup_model.pkl")
+
+def predict_talents(new_answers):
+    """
+    new_answers — список из 200 чисел (1-5)
+    Возвращает: список (талант, балл) отсортированный по убыванию
+    """
+    x = np.array([[3 if a is None else a for a in new_answers]])
+    m = joblib.load("gallup_model.pkl")
+    talents = joblib.load("gallup_talents.pkl")
+    predicted = m.predict(x)[0]
+    ranked = sorted(zip(talents, predicted), key=lambda t: t[1], reverse=True)
+    return ranked
+
+# Тест: предсказываем для Александра
+print("\n" + "=" * 60)
+print("ТЕСТ: Предсказание для Александра")
 print("=" * 60)
 
-if mean_percent >= 96:
-    print("ЦЕЛЬ ДОСТИГНУТА! Точность 96%+")
-elif mean_percent >= 90:
-    print("Хороший результат! Нужно немного докрутить.")
-elif mean_percent >= 80:
-    print("Неплохо для начала. Попробуем другие параметры.")
-else:
-    print("Нужно работать над моделью. Попробуем другие подходы.")
+top5 = predict_talents(answers["Alexandr"])
+print("\nПредсказанный TOP-5:")
+for i, (talent, score) in enumerate(top5[:5], 1):
+    print(f"  {i}. {talent} ({score:.1f})")
+
+print("\nРеальный TOP-5:")
+for i, talent in enumerate(gallup_rankings["Alexandr"][:5], 1):
+    print(f"  {i}. {talent}")
