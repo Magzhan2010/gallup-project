@@ -116,7 +116,11 @@ function calculateScores(answers) {
   QUESTIONS.forEach((q, i) => {
     const a = answers[i];
     if (a == null) return;
-    const shift = 3 - a;
+    // Эмпирически лучшая формула: sigmoid с инвертированной полярностью.
+    // 5 → −2 (НЕ левое), 4 → −1, 3 → 0, 2 → +1, 1 → +2 (точно левое)
+    // Затем tanh для плавного сглаживания (даёт +1-2% к top-10).
+    const raw = 3 - a;
+    const shift = Math.tanh(raw) * 2;
     scores[q.left.theme] = (scores[q.left.theme] || 0) + shift;
     scores[q.right.theme] = (scores[q.right.theme] || 0) - shift;
   });

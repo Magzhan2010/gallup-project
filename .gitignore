@@ -33,3 +33,6 @@ Thumbs.db
 # API токены (на случай если случайно появятся)
 .env
 .env.local
+
+.vercel
+.env*
