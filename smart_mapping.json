@@ -1,0 +1,1002 @@
+[
+  {
+    "q": 1,
+    "talent_A": "Achiever",
+    "talent_B": "Futuristic"
+  },
+  {
+    "q": 2,
+    "talent_A": "Woo",
+    "talent_B": "Maximizer"
+  },
+  {
+    "q": 3,
+    "talent_A": "Intellection",
+    "talent_B": "Futuristic"
+  },
+  {
+    "q": 4,
+    "talent_A": "Developer",
+    "talent_B": "Competition"
+  },
+  {
+    "q": 5,
+    "talent_A": "Command",
+    "talent_B": "Woo"
+  },
+  {
+    "q": 6,
+    "talent_A": "Responsibility",
+    "talent_B": "Connectedness"
+  },
+  {
+    "q": 7,
+    "talent_A": "Woo",
+    "talent_B": "Empathy"
+  },
+  {
+    "q": 8,
+    "talent_A": "Activator",
+    "talent_B": "Achiever"
+  },
+  {
+    "q": 9,
+    "talent_A": "Woo",
+    "talent_B": "Intellection"
+  },
+  {
+    "q": 10,
+    "talent_A": "Ideation",
+    "talent_B": "Responsibility"
+  },
+  {
+    "q": 11,
+    "talent_A": "Competition",
+    "talent_B": "Analytical"
+  },
+  {
+    "q": 12,
+    "talent_A": "Learner",
+    "talent_B": "Empathy"
+  },
+  {
+    "q": 13,
+    "talent_A": "Strategic",
+    "talent_B": "Empathy"
+  },
+  {
+    "q": 14,
+    "talent_A": "Intellection",
+    "talent_B": "Responsibility"
+  },
+  {
+    "q": 15,
+    "talent_A": "Arranger",
+    "talent_B": "Adaptability"
+  },
+  {
+    "q": 16,
+    "talent_A": "Arranger",
+    "talent_B": "Adaptability"
+  },
+  {
+    "q": 17,
+    "talent_A": "Belief",
+    "talent_B": "Communication"
+  },
+  {
+    "q": 18,
+    "talent_A": "Communication",
+    "talent_B": "Competition"
+  },
+  {
+    "q": 19,
+    "talent_A": "Relator",
+    "talent_B": "Significance"
+  },
+  {
+    "q": 20,
+    "talent_A": "Intellection",
+    "talent_B": "Discipline"
+  },
+  {
+    "q": 21,
+    "talent_A": "Adaptability",
+    "talent_B": "Communication"
+  },
+  {
+    "q": 22,
+    "talent_A": "Deliberative",
+    "talent_B": "Connectedness"
+  },
+  {
+    "q": 23,
+    "talent_A": "Empathy",
+    "talent_B": "Communication"
+  },
+  {
+    "q": 24,
+    "talent_A": "Arranger",
+    "talent_B": "Includer"
+  },
+  {
+    "q": 25,
+    "talent_A": "Learner",
+    "talent_B": "Communication"
+  },
+  {
+    "q": 26,
+    "talent_A": "Strategic",
+    "talent_B": "Developer"
+  },
+  {
+    "q": 27,
+    "talent_A": "Includer",
+    "talent_B": "Positivity"
+  },
+  {
+    "q": 28,
+    "talent_A": "Arranger",
+    "talent_B": "Adaptability"
+  },
+  {
+    "q": 29,
+    "talent_A": "Positivity",
+    "talent_B": "Analytical"
+  },
+  {
+    "q": 30,
+    "talent_A": "Competition",
+    "talent_B": "Communication"
+  },
+  {
+    "q": 31,
+    "talent_A": "Empathy",
+    "talent_B": "Command"
+  },
+  {
+    "q": 32,
+    "talent_A": "Responsibility",
+    "talent_B": "Competition"
+  },
+  {
+    "q": 33,
+    "talent_A": "Includer",
+    "talent_B": "Activator"
+  },
+  {
+    "q": 34,
+    "talent_A": "Significance",
+    "talent_B": "Learner"
+  },
+  {
+    "q": 35,
+    "talent_A": "Communication",
+    "talent_B": "Connectedness"
+  },
+  {
+    "q": 36,
+    "talent_A": "Adaptability",
+    "talent_B": "Individualization"
+  },
+  {
+    "q": 37,
+    "talent_A": "Communication",
+    "talent_B": "Command"
+  },
+  {
+    "q": 38,
+    "talent_A": "Ideation",
+    "talent_B": "Achiever"
+  },
+  {
+    "q": 39,
+    "talent_A": "Communication",
+    "talent_B": "Competition"
+  },
+  {
+    "q": 40,
+    "talent_A": "Communication",
+    "talent_B": "Intellection"
+  },
+  {
+    "q": 41,
+    "talent_A": "Consistency",
+    "talent_B": "Empathy"
+  },
+  {
+    "q": 42,
+    "talent_A": "Communication",
+    "talent_B": "Connectedness"
+  },
+  {
+    "q": 43,
+    "talent_A": "Positivity",
+    "talent_B": "Analytical"
+  },
+  {
+    "q": 44,
+    "talent_A": "Adaptability",
+    "talent_B": "Strategic"
+  },
+  {
+    "q": 45,
+    "talent_A": "Developer",
+    "talent_B": "Communication"
+  },
+  {
+    "q": 46,
+    "talent_A": "Arranger",
+    "talent_B": "Competition"
+  },
+  {
+    "q": 47,
+    "talent_A": "Harmony",
+    "talent_B": "Arranger"
+  },
+  {
+    "q": 48,
+    "talent_A": "Competition",
+    "talent_B": "Consistency"
+  },
+  {
+    "q": 49,
+    "talent_A": "Command",
+    "talent_B": "Positivity"
+  },
+  {
+    "q": 50,
+    "talent_A": "Strategic",
+    "talent_B": "Command"
+  },
+  {
+    "q": 51,
+    "talent_A": "Competition",
+    "talent_B": "Communication"
+  },
+  {
+    "q": 52,
+    "talent_A": "Significance",
+    "talent_B": "Analytical"
+  },
+  {
+    "q": 53,
+    "talent_A": "Arranger",
+    "talent_B": "Includer"
+  },
+  {
+    "q": 54,
+    "talent_A": "Woo",
+    "talent_B": "Includer"
+  },
+  {
+    "q": 55,
+    "talent_A": "Empathy",
+    "talent_B": "Learner"
+  },
+  {
+    "q": 56,
+    "talent_A": "Adaptability",
+    "talent_B": "Analytical"
+  },
+  {
+    "q": 57,
+    "talent_A": "Woo",
+    "talent_B": "Ideation"
+  },
+  {
+    "q": 58,
+    "talent_A": "Adaptability",
+    "talent_B": "Arranger"
+  },
+  {
+    "q": 59,
+    "talent_A": "Adaptability",
+    "talent_B": "Arranger"
+  },
+  {
+    "q": 60,
+    "talent_A": "Communication",
+    "talent_B": "Ideation"
+  },
+  {
+    "q": 61,
+    "talent_A": "Includer",
+    "talent_B": "Individualization"
+  },
+  {
+    "q": 62,
+    "talent_A": "Responsibility",
+    "talent_B": "Competition"
+  },
+  {
+    "q": 63,
+    "talent_A": "Responsibility",
+    "talent_B": "Adaptability"
+  },
+  {
+    "q": 64,
+    "talent_A": "Command",
+    "talent_B": "Communication"
+  },
+  {
+    "q": 65,
+    "talent_A": "Strategic",
+    "talent_B": "Maximizer"
+  },
+  {
+    "q": 66,
+    "talent_A": "Ideation",
+    "talent_B": "Responsibility"
+  },
+  {
+    "q": 67,
+    "talent_A": "Relator",
+    "talent_B": "Competition"
+  },
+  {
+    "q": 68,
+    "talent_A": "Includer",
+    "talent_B": "Arranger"
+  },
+  {
+    "q": 69,
+    "talent_A": "Ideation",
+    "talent_B": "Harmony"
+  },
+  {
+    "q": 70,
+    "talent_A": "Analytical",
+    "talent_B": "Adaptability"
+  },
+  {
+    "q": 71,
+    "talent_A": "Includer",
+    "talent_B": "Individualization"
+  },
+  {
+    "q": 72,
+    "talent_A": "Communication",
+    "talent_B": "Connectedness"
+  },
+  {
+    "q": 73,
+    "talent_A": "Analytical",
+    "talent_B": "Adaptability"
+  },
+  {
+    "q": 74,
+    "talent_A": "Ideation",
+    "talent_B": "Achiever"
+  },
+  {
+    "q": 75,
+    "talent_A": "Connectedness",
+    "talent_B": "Communication"
+  },
+  {
+    "q": 76,
+    "talent_A": "Deliberative",
+    "talent_B": "Connectedness"
+  },
+  {
+    "q": 77,
+    "talent_A": "Strategic",
+    "talent_B": "Belief"
+  },
+  {
+    "q": 78,
+    "talent_A": "Communication",
+    "talent_B": "Command"
+  },
+  {
+    "q": 79,
+    "talent_A": "Competition",
+    "talent_B": "Responsibility"
+  },
+  {
+    "q": 80,
+    "talent_A": "Strategic",
+    "talent_B": "Maximizer"
+  },
+  {
+    "q": 81,
+    "talent_A": "Communication",
+    "talent_B": "Command"
+  },
+  {
+    "q": 82,
+    "talent_A": "Connectedness",
+    "talent_B": "Communication"
+  },
+  {
+    "q": 83,
+    "talent_A": "Achiever",
+    "talent_B": "Deliberative"
+  },
+  {
+    "q": 84,
+    "talent_A": "Intellection",
+    "talent_B": "Communication"
+  },
+  {
+    "q": 85,
+    "talent_A": "Arranger",
+    "talent_B": "Woo"
+  },
+  {
+    "q": 86,
+    "talent_A": "Developer",
+    "talent_B": "Analytical"
+  },
+  {
+    "q": 87,
+    "talent_A": "Connectedness",
+    "talent_B": "Woo"
+  },
+  {
+    "q": 88,
+    "talent_A": "Communication",
+    "talent_B": "Developer"
+  },
+  {
+    "q": 89,
+    "talent_A": "Command",
+    "talent_B": "Woo"
+  },
+  {
+    "q": 90,
+    "talent_A": "Maximizer",
+    "talent_B": "Achiever"
+  },
+  {
+    "q": 91,
+    "talent_A": "Developer",
+    "talent_B": "Communication"
+  },
+  {
+    "q": 92,
+    "talent_A": "Empathy",
+    "talent_B": "Focus"
+  },
+  {
+    "q": 93,
+    "talent_A": "Intellection",
+    "talent_B": "Communication"
+  },
+  {
+    "q": 94,
+    "talent_A": "Responsibility",
+    "talent_B": "Competition"
+  },
+  {
+    "q": 95,
+    "talent_A": "Intellection",
+    "talent_B": "Responsibility"
+  },
+  {
+    "q": 96,
+    "talent_A": "Achiever",
+    "talent_B": "Maximizer"
+  },
+  {
+    "q": 97,
+    "talent_A": "Consistency",
+    "talent_B": "Individualization"
+  },
+  {
+    "q": 98,
+    "talent_A": "Connectedness",
+    "talent_B": "Restorative"
+  },
+  {
+    "q": 99,
+    "talent_A": "Empathy",
+    "talent_B": "Communication"
+  },
+  {
+    "q": 100,
+    "talent_A": "Connectedness",
+    "talent_B": "Analytical"
+  },
+  {
+    "q": 101,
+    "talent_A": "Ideation",
+    "talent_B": "Woo"
+  },
+  {
+    "q": 102,
+    "talent_A": "Includer",
+    "talent_B": "Arranger"
+  },
+  {
+    "q": 103,
+    "talent_A": "Intellection",
+    "talent_B": "Relator"
+  },
+  {
+    "q": 104,
+    "talent_A": "Ideation",
+    "talent_B": "Achiever"
+  },
+  {
+    "q": 105,
+    "talent_A": "Competition",
+    "talent_B": "Communication"
+  },
+  {
+    "q": 106,
+    "talent_A": "Responsibility",
+    "talent_B": "Intellection"
+  },
+  {
+    "q": 107,
+    "talent_A": "Woo",
+    "talent_B": "Empathy"
+  },
+  {
+    "q": 108,
+    "talent_A": "Ideation",
+    "talent_B": "Positivity"
+  },
+  {
+    "q": 109,
+    "talent_A": "Responsibility",
+    "talent_B": "Intellection"
+  },
+  {
+    "q": 110,
+    "talent_A": "Responsibility",
+    "talent_B": "Connectedness"
+  },
+  {
+    "q": 111,
+    "talent_A": "Adaptability",
+    "talent_B": "Achiever"
+  },
+  {
+    "q": 112,
+    "talent_A": "Developer",
+    "talent_B": "Communication"
+  },
+  {
+    "q": 113,
+    "talent_A": "Developer",
+    "talent_B": "Communication"
+  },
+  {
+    "q": 114,
+    "talent_A": "Adaptability",
+    "talent_B": "Responsibility"
+  },
+  {
+    "q": 115,
+    "talent_A": "Strategic",
+    "talent_B": "Activator"
+  },
+  {
+    "q": 116,
+    "talent_A": "Strategic",
+    "talent_B": "Intellection"
+  },
+  {
+    "q": 117,
+    "talent_A": "Intellection",
+    "talent_B": "Relator"
+  },
+  {
+    "q": 118,
+    "talent_A": "Empathy",
+    "talent_B": "Focus"
+  },
+  {
+    "q": 119,
+    "talent_A": "Developer",
+    "talent_B": "Communication"
+  },
+  {
+    "q": 120,
+    "talent_A": "Responsibility",
+    "talent_B": "Intellection"
+  },
+  {
+    "q": 121,
+    "talent_A": "Deliberative",
+    "talent_B": "Competition"
+  },
+  {
+    "q": 122,
+    "talent_A": "Includer",
+    "talent_B": "Arranger"
+  },
+  {
+    "q": 123,
+    "talent_A": "Responsibility",
+    "talent_B": "Individualization"
+  },
+  {
+    "q": 124,
+    "talent_A": "Intellection",
+    "talent_B": "Command"
+  },
+  {
+    "q": 125,
+    "talent_A": "Adaptability",
+    "talent_B": "Ideation"
+  },
+  {
+    "q": 126,
+    "talent_A": "Learner",
+    "talent_B": "Woo"
+  },
+  {
+    "q": 127,
+    "talent_A": "Responsibility",
+    "talent_B": "Competition"
+  },
+  {
+    "q": 128,
+    "talent_A": "Command",
+    "talent_B": "Harmony"
+  },
+  {
+    "q": 129,
+    "talent_A": "Strategic",
+    "talent_B": "Empathy"
+  },
+  {
+    "q": 130,
+    "talent_A": "Woo",
+    "talent_B": "Discipline"
+  },
+  {
+    "q": 131,
+    "talent_A": "Communication",
+    "talent_B": "Intellection"
+  },
+  {
+    "q": 132,
+    "talent_A": "Responsibility",
+    "talent_B": "Includer"
+  },
+  {
+    "q": 133,
+    "talent_A": "Intellection",
+    "talent_B": "Responsibility"
+  },
+  {
+    "q": 134,
+    "talent_A": "Communication",
+    "talent_B": "Intellection"
+  },
+  {
+    "q": 135,
+    "talent_A": "Strategic",
+    "talent_B": "Woo"
+  },
+  {
+    "q": 136,
+    "talent_A": "Connectedness",
+    "talent_B": "Communication"
+  },
+  {
+    "q": 137,
+    "talent_A": "Communication",
+    "talent_B": "Empathy"
+  },
+  {
+    "q": 138,
+    "talent_A": "Consistency",
+    "talent_B": "Individualization"
+  },
+  {
+    "q": 139,
+    "talent_A": "Belief",
+    "talent_B": "Strategic"
+  },
+  {
+    "q": 140,
+    "talent_A": "Adaptability",
+    "talent_B": "Arranger"
+  },
+  {
+    "q": 141,
+    "talent_A": "Consistency",
+    "talent_B": "Maximizer"
+  },
+  {
+    "q": 142,
+    "talent_A": "Responsibility",
+    "talent_B": "Connectedness"
+  },
+  {
+    "q": 143,
+    "talent_A": "Belief",
+    "talent_B": "Communication"
+  },
+  {
+    "q": 144,
+    "talent_A": "Consistency",
+    "talent_B": "Responsibility"
+  },
+  {
+    "q": 145,
+    "talent_A": "Arranger",
+    "talent_B": "Empathy"
+  },
+  {
+    "q": 146,
+    "talent_A": "Adaptability",
+    "talent_B": "Context"
+  },
+  {
+    "q": 147,
+    "talent_A": "Deliberative",
+    "talent_B": "Adaptability"
+  },
+  {
+    "q": 148,
+    "talent_A": "Intellection",
+    "talent_B": "Responsibility"
+  },
+  {
+    "q": 149,
+    "talent_A": "Arranger",
+    "talent_B": "Communication"
+  },
+  {
+    "q": 150,
+    "talent_A": "Communication",
+    "talent_B": "Connectedness"
+  },
+  {
+    "q": 151,
+    "talent_A": "Woo",
+    "talent_B": "Maximizer"
+  },
+  {
+    "q": 152,
+    "talent_A": "Intellection",
+    "talent_B": "Achiever"
+  },
+  {
+    "q": 153,
+    "talent_A": "Harmony",
+    "talent_B": "Command"
+  },
+  {
+    "q": 154,
+    "talent_A": "Belief",
+    "talent_B": "Communication"
+  },
+  {
+    "q": 155,
+    "talent_A": "Adaptability",
+    "talent_B": "Arranger"
+  },
+  {
+    "q": 156,
+    "talent_A": "Competition",
+    "talent_B": "Belief"
+  },
+  {
+    "q": 157,
+    "talent_A": "Analytical",
+    "talent_B": "Intellection"
+  },
+  {
+    "q": 158,
+    "talent_A": "Intellection",
+    "talent_B": "Communication"
+  },
+  {
+    "q": 159,
+    "talent_A": "Maximizer",
+    "talent_B": "Strategic"
+  },
+  {
+    "q": 160,
+    "talent_A": "Empathy",
+    "talent_B": "Competition"
+  },
+  {
+    "q": 161,
+    "talent_A": "Harmony",
+    "talent_B": "Ideation"
+  },
+  {
+    "q": 162,
+    "talent_A": "Ideation",
+    "talent_B": "Communication"
+  },
+  {
+    "q": 163,
+    "talent_A": "Adaptability",
+    "talent_B": "Responsibility"
+  },
+  {
+    "q": 164,
+    "talent_A": "Communication",
+    "talent_B": "Developer"
+  },
+  {
+    "q": 165,
+    "talent_A": "Includer",
+    "talent_B": "Arranger"
+  },
+  {
+    "q": 166,
+    "talent_A": "Responsibility",
+    "talent_B": "Competition"
+  },
+  {
+    "q": 167,
+    "talent_A": "Strategic",
+    "talent_B": "Developer"
+  },
+  {
+    "q": 168,
+    "talent_A": "Competition",
+    "talent_B": "Consistency"
+  },
+  {
+    "q": 169,
+    "talent_A": "Responsibility",
+    "talent_B": "Adaptability"
+  },
+  {
+    "q": 170,
+    "talent_A": "Responsibility",
+    "talent_B": "Intellection"
+  },
+  {
+    "q": 171,
+    "talent_A": "Includer",
+    "talent_B": "Woo"
+  },
+  {
+    "q": 172,
+    "talent_A": "Competition",
+    "talent_B": "Deliberative"
+  },
+  {
+    "q": 173,
+    "talent_A": "Responsibility",
+    "talent_B": "Competition"
+  },
+  {
+    "q": 174,
+    "talent_A": "Woo",
+    "talent_B": "Connectedness"
+  },
+  {
+    "q": 175,
+    "talent_A": "Communication",
+    "talent_B": "Intellection"
+  },
+  {
+    "q": 176,
+    "talent_A": "Deliberative",
+    "talent_B": "Achiever"
+  },
+  {
+    "q": 177,
+    "talent_A": "Responsibility",
+    "talent_B": "Adaptability"
+  },
+  {
+    "q": 178,
+    "talent_A": "Competition",
+    "talent_B": "Belief"
+  },
+  {
+    "q": 179,
+    "talent_A": "Strategic",
+    "talent_B": "Maximizer"
+  },
+  {
+    "q": 180,
+    "talent_A": "Empathy",
+    "talent_B": "Competition"
+  },
+  {
+    "q": 181,
+    "talent_A": "Includer",
+    "talent_B": "Individualization"
+  },
+  {
+    "q": 182,
+    "talent_A": "Adaptability",
+    "talent_B": "Arranger"
+  },
+  {
+    "q": 183,
+    "talent_A": "Adaptability",
+    "talent_B": "Command"
+  },
+  {
+    "q": 184,
+    "talent_A": "Adaptability",
+    "talent_B": "Analytical"
+  },
+  {
+    "q": 185,
+    "talent_A": "Ideation",
+    "talent_B": "Maximizer"
+  },
+  {
+    "q": 186,
+    "talent_A": "Maximizer",
+    "talent_B": "Focus"
+  },
+  {
+    "q": 187,
+    "talent_A": "Maximizer",
+    "talent_B": "Strategic"
+  },
+  {
+    "q": 188,
+    "talent_A": "Includer",
+    "talent_B": "Focus"
+  },
+  {
+    "q": 189,
+    "talent_A": "Adaptability",
+    "talent_B": "Analytical"
+  },
+  {
+    "q": 190,
+    "talent_A": "Maximizer",
+    "talent_B": "Consistency"
+  },
+  {
+    "q": 191,
+    "talent_A": "Competition",
+    "talent_B": "Deliberative"
+  },
+  {
+    "q": 192,
+    "talent_A": "Competition",
+    "talent_B": "Arranger"
+  },
+  {
+    "q": 193,
+    "talent_A": "Harmony",
+    "talent_B": "Ideation"
+  },
+  {
+    "q": 194,
+    "talent_A": "Intellection",
+    "talent_B": "Futuristic"
+  },
+  {
+    "q": 195,
+    "talent_A": "Harmony",
+    "talent_B": "Ideation"
+  },
+  {
+    "q": 196,
+    "talent_A": "Empathy",
+    "talent_B": "Futuristic"
+  },
+  {
+    "q": 197,
+    "talent_A": "Relator",
+    "talent_B": "Woo"
+  },
+  {
+    "q": 198,
+    "talent_A": "Adaptability",
+    "talent_B": "Arranger"
+  },
+  {
+    "q": 199,
+    "talent_A": "Empathy",
+    "talent_B": "Responsibility"
+  },
+  {
+    "q": 200,
+    "talent_A": "Connectedness",
+    "talent_B": "Responsibility"
+  }
+]

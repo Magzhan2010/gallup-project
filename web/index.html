@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallup Copy — Тест сильных сторон</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23DC1E2D'/%3E%3Ctext x='50' y='72' font-size='62' font-weight='800' text-anchor='middle' fill='white' font-family='Georgia'%3EG%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="brand">
+      <div class="brand-mark">G</div>
+      <div>
+        <div class="brand-name">Gallup Copy</div>
+        <div class="brand-tag">Открой свои 34 таланта</div>
+      </div>
+    </div>
+    <div class="header-meta" id="header-meta">Бесплатный тест · 15 минут</div>
+  </header>
+
+  <!-- ============== WELCOME ============== -->
+  <section id="welcome" class="welcome">
+    <div class="welcome-eyebrow">Бесплатно · Без регистрации</div>
+    <h1>Узнайте свои<br><em>сильные стороны</em></h1>
+    <p class="welcome-sub">
+      Клон теста Gallup CliftonStrengths — за 15 минут определите свои 34 таланта
+      и узнайте, что у вас получается лучше всего.
+    </p>
+
+    <div class="welcome-features">
+      <div class="feature">
+        <div class="feature-num">200</div>
+        <div class="feature-label">пар утверждений для анализа</div>
+      </div>
+      <div class="feature">
+        <div class="feature-num">34</div>
+        <div class="feature-label">темы-таланта (как в Gallup)</div>
+      </div>
+      <div class="feature">
+        <div class="feature-num">5</div>
+        <div class="feature-label">ваших топ-сильных сторон в результате</div>
+      </div>
+    </div>
+
+    <div class="welcome-disclaimer">
+      Это экспериментальная версия. Точность алгоритма ~30% по сравнению с оригинальным Gallup.
+      Используйте как ориентир, не как истину в последней инстанции.
+    </div>
+
+    <button id="start-btn" class="btn-primary btn-lg">
+      Начать тест →
+    </button>
+  </section>
+
+  <!-- ============== TEST ============== -->
+  <section id="test" class="hidden">
+    <div class="test-progress">
+      <div class="progress-info">
+        <span><span class="progress-q" id="q-current">5</span> из 200 вопросов</span>
+        <span id="progress-pct">2%</span>
+      </div>
+      <div class="progress-bar">
+        <div id="progress-fill" class="progress-fill"></div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <h2 class="question-title">Какое утверждение описывает вас лучше?</h2>
+
+      <div class="statements">
+        <button class="statement" id="stmt-left" data-side="left">
+          <div class="statement-badge">А</div>
+          <div class="statement-text" id="left-text"></div>
+          <div class="statement-hint">Нажмите, если это про вас</div>
+        </button>
+
+        <button class="statement" id="stmt-right" data-side="right">
+          <div class="statement-badge">Б</div>
+          <div class="statement-text" id="right-text"></div>
+          <div class="statement-hint">Нажмите, если это про вас</div>
+        </button>
+      </div>
+
+      <div class="scale-section">
+        <div class="scale-labels">
+          <span class="scale-side-label"><span class="letter">А</span> Полностью левое</span>
+          <span class="scale-side-label">Полностью правое <span class="letter">Б</span></span>
+        </div>
+        <div class="scale-buttons" id="scale">
+          <button data-val="1" class="scale-btn">
+            <span class="scale-btn-num">1</span>
+            <span class="scale-btn-desc">Совсем А</span>
+          </button>
+          <button data-val="2" class="scale-btn">
+            <span class="scale-btn-num">2</span>
+            <span class="scale-btn-desc">Скорее А</span>
+          </button>
+          <button data-val="3" class="scale-btn">
+            <span class="scale-btn-num">3</span>
+            <span class="scale-btn-desc">Одинаково</span>
+          </button>
+          <button data-val="4" class="scale-btn">
+            <span class="scale-btn-num">4</span>
+            <span class="scale-btn-desc">Скорее Б</span>
+          </button>
+          <button data-val="5" class="scale-btn">
+            <span class="scale-btn-num">5</span>
+            <span class="scale-btn-desc">Совсем Б</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="test-nav">
+        <button id="prev-btn" class="btn-secondary">← Назад</button>
+        <button id="finish-btn" class="btn-primary hidden">Получить результат →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== RESULTS ============== -->
+  <section id="results" class="hidden">
+
+    <div class="results-hero">
+      <div class="results-eyebrow">Ваш результат</div>
+      <h1>Ваши сильные стороны</h1>
+      <p>Топ-5 талантов на основе ваших ответов, плюс ранг всех 34 тем.</p>
+    </div>
+
+    <div class="top5-grid" id="top-grid"></div>
+
+    <div class="domains-section">
+      <h3 class="section-title">Сильные стороны по доменам</h3>
+      <div class="domains-grid" id="domains-grid"></div>
+    </div>
+
+    <div class="all-themes-section">
+      <h3 class="section-title">Все 34 темы</h3>
+      <div class="all-themes" id="all-themes"></div>
+    </div>
+
+    <div class="gallup-section">
+      <h3>У вас есть результат Gallup?</h3>
+      <p class="gallup-desc">
+        Если вы проходили оригинальный Gallup и помните свой топ-5 — выберите ниже.
+        Это поможет улучшить алгоритм (данные пойдут в обезличенную статистику).
+      </p>
+
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">
+        Выберите до 5 тем (1 клик — топ-1, 2 клика — топ-2, и т.д.):
+      </p>
+      <div id="gallup-chips" class="theme-chips"></div>
+
+      <div class="submit-row">
+        <button id="submit-btn" class="btn-primary">📤 Отправить результат</button>
+        <button id="restart-btn" class="btn-secondary">🔄 Пройти заново</button>
+      </div>
+      <div id="submit-status" class="hidden" style="margin-top: 16px;"></div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <p>Открытый проект · Все данные обрабатываются в браузере, на сервер ничего не отправляется.</p>
+  </footer>
+
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
