@@ -274,6 +274,7 @@ function applyParsedGallup(matched) {
   state.gallupTop5 = matched.slice(0, 5).map((theme, i) => ({ theme, rank: i + 1 }));
   updateGallupChipState();
   updateTextPreview();
+  updateMetaVisibility();
 }
 
 function updateTextPreview() {
@@ -287,6 +288,25 @@ function updateTextPreview() {
   } else {
     preview.innerHTML = `<span style="color: var(--success);">✅ Введено 5 тем:</span> <b>${state.gallupTop5.map(t => t.theme).join(' → ')}</b>`;
   }
+}
+
+function updateMetaVisibility() {
+  const meta = document.getElementById('gallup-meta');
+  if (!meta) return;
+  if (state.gallupTop5.length === 5) {
+    meta.classList.remove('hidden');
+  } else {
+    meta.classList.add('hidden');
+  }
+}
+
+function getMetaValues() {
+  const dateRadio = document.querySelector('input[name="gallup-date"]:checked');
+  const confRadio = document.querySelector('input[name="gallup-confidence"]:checked');
+  return {
+    gallup_date: dateRadio ? dateRadio.value : 'unknown',
+    gallup_confidence: confRadio ? confRadio.value : 'unknown',
+  };
 }
 
 function handleTextInput() {
@@ -391,11 +411,13 @@ function clearState() {
 async function submitResults() {
   const scores = calculateScores(state.answers);
   const ranks = ranksFromScores(scores);
+  const meta = getMetaValues();
   const payload = {
     timestamp: new Date().toISOString(),
     answers_count: state.answers.filter(a => a !== null).length,
     predicted_top5: ranks.slice(0, 5).map(t => ({ theme: t.theme, score: t.score })),
     gallup_top5: state.gallupTop5,
+    gallup_meta: meta,
     all_ranks: ranks,
   };
 
@@ -417,6 +439,9 @@ async function submitResults() {
         const gallupSet = new Set(payload.gallup_top5.map(t => t.theme));
         const match = [...predSet].filter(t => gallupSet.has(t)).length;
         accuracyMsg = `<br><span style="font-size:13px;">📈 Точность: <b>${match}/5 = ${match*20}%</b></span>`;
+        if (meta.gallup_confidence === 'guess' || meta.gallup_date === 'gt1y' || meta.gallup_date === 'unknown') {
+          accuracyMsg += `<br><span style="font-size:12px;color:#B71C1C;">⚠️ Эти данные помечены как ненадёжные — для обучения использоваться не будут.</span>`;
+        }
       } else {
         accuracyMsg = `<br><span style="font-size:13px;color:#B71C1C;">⚠️ Gallup-результат НЕ введён — данные бесполезны для обучения.</span>`;
       }

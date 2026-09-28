@@ -102,8 +102,27 @@ function formatMessage(payload) {
   const dt = new Date(payload.timestamp).toLocaleString('ru-RU', { timeZone: 'Asia/Almaty' });
   const lines = [];
 
+  // Метки качества данных
+  const meta = payload.gallup_meta || {};
+  const dateLabels = {
+    'lt3m': '🟢 <3 мес',
+    '3to6m': '🟡 3-6 мес',
+    '6to12m': '🟠 6-12 мес',
+    'gt1y': '🔴 >1 года',
+    'unknown': '⚪ неизв.',
+  };
+  const confLabels = {
+    'pdf': '🟢 PDF',
+    'good': '🟡 помню',
+    'rough': '🟠 примерно',
+    'guess': '🔴 угадай',
+  };
+  const quality = dateLabels[meta.gallup_date] || '⚪ —';
+  const conf = confLabels[meta.gallup_confidence] || '⚪ —';
+
   lines.push('🎯 <b>Gallup Copy — новый результат</b>');
   lines.push('📅 ' + dt);
+  lines.push('🏷 Качество: ' + quality + ' | Уверенность: ' + conf);
   lines.push('');
   lines.push('✅ Ответов: <b>' + payload.answers_count + '/200</b>');
   lines.push('🎓 Gallup введён: <b>' + (payload.gallup_top5 && payload.gallup_top5.length > 0 ? 'да ✅' : 'НЕТ ❌') + '</b>');
