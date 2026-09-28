@@ -146,14 +146,60 @@
     <div class="gallup-section">
       <h3>У вас есть результат Gallup?</h3>
       <p class="gallup-desc">
-        Если вы проходили оригинальный Gallup и помните свой топ-5 — выберите ниже.
+        Если вы проходили оригинальный Gallup CliftonStrengths — введите свой топ-5 ниже.
         Это поможет улучшить алгоритм (данные пойдут в обезличенную статистику).
       </p>
 
-      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">
-        Выберите до 5 тем (1 клик — топ-1, 2 клика — топ-2, и т.д.):
-      </p>
-      <div id="gallup-chips" class="theme-chips"></div>
+      <!-- Способ 1: текстовый ввод (самый быстрый) -->
+      <div style="background: var(--bg-subtle); border-radius: 12px; padding: 20px; margin: 16px 0;">
+        <p style="font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 8px;">
+          ✏️ Способ 1: вставьте текстом (быстрее всего)
+        </p>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
+          Из вашего Gallup-отчёта скопируйте 5 тем через запятую или с новой строки. Например:<br>
+          <code style="background: var(--bg-card); padding: 2px 6px; border-radius: 4px; font-size: 12px;">Strategic, Achiever, Context, Deliberative, Discipline</code>
+        </p>
+        <textarea
+          id="gallup-text-input"
+          placeholder="Вставьте сюда 5 тем из Gallup..."
+          style="width: 100%; min-height: 80px; padding: 10px; border: 1.5px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 14px; resize: vertical; background: var(--bg-card); color: var(--text);"
+        ></textarea>
+        <div id="gallup-text-preview" style="margin-top: 10px; font-size: 13px;"></div>
+      </div>
+
+      <!-- Способ 2: клик по чипам -->
+      <details style="margin: 12px 0;">
+        <summary style="font-size: 13px; font-weight: 600; color: var(--text); cursor: pointer; padding: 8px 0;">
+          🖱️ Способ 2: выбрать кликами (если не хотите копировать)
+        </summary>
+        <div style="padding: 12px 0;">
+          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
+            Кликните 5 тем в нужном порядке. Первая выбранная = ваш топ-1, и т.д.
+          </p>
+          <div id="gallup-chips" class="theme-chips"></div>
+        </div>
+      </details>
+
+      <!-- Подсказка где найти Gallup-результат -->
+      <details style="margin: 16px 0; background: #FFF8E6; border: 1px solid #F5C842; border-radius: 8px; padding: 12px 16px;">
+        <summary style="font-size: 13px; font-weight: 600; color: #6B4F00; cursor: pointer;">
+          📖 Где найти свой Gallup-топ-5?
+        </summary>
+        <div style="margin-top: 10px; font-size: 13px; color: #6B4F00; line-height: 1.6;">
+          <p><b>В PDF-отчёте Gallup ищите раздел «Top 5 Themes» или «Сильные стороны».</b></p>
+          <p>Обычно это на первой странице отчёта, выглядит так:</p>
+          <div style="background: white; border: 1px solid #F5C842; padding: 10px 14px; border-radius: 6px; margin: 8px 0; font-family: monospace; font-size: 12px;">
+            <div>1. Strategic</div>
+            <div>2. Achiever</div>
+            <div>3. Context</div>
+            <div>4. Deliberative</div>
+            <div>5. Discipline</div>
+          </div>
+          <p>Скопируйте эти 5 названий и вставьте в поле выше.</p>
+          <p><b>Если не помните точно</b> — лучше пропустите, чем ввести неправильно. Мусорные данные испортят обучение.</p>
+          <p><b>Если Gallup ещё не проходили</b> — просто оставьте поле пустым, всё равно пройдите тест (ваши ответы пригодятся, когда мы добавим больше данных).</p>
+        </div>
+      </details>
 
       <div class="submit-row">
         <button id="submit-btn" class="btn-primary">📤 Отправить результат</button>

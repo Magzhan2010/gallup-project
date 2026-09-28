@@ -234,8 +234,85 @@ function renderDomains(scores) {
 // GALLUP INPUT
 // =============================================================================
 
+function normalizeThemeName(s) {
+  // Нормализация разных написаний: "Self-assurance" → "Self-Assurance"
+  if (!s) return '';
+  let n = String(s).trim();
+  if (n.includes('-')) {
+    n = n.split('-').map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()).join('-');
+  } else {
+    n = n.charAt(0).toUpperCase() + n.slice(1).toLowerCase();
+  }
+  return n;
+}
+
+function parseGallupText(text) {
+  // Разбить текст на отдельные названия тем и сопоставить с 34 Gallup-темами.
+  // Разделители: пробелы, запятая, новая строка, точка с запятой, табы, "1." "1)" и т.п.
+  const known = Object.keys(THEME_DESCRIPTIONS).map(normalizeThemeName);
+  const tokens = text
+    .split(/[\s,;|\t\n\r]+/)
+    .map(t => t.replace(/^\d+[\.\)\-\:]\s*/, '').trim()) // убрать "1." "2)" "3-"
+    .filter(t => t.length > 0);
+  const matched = [];
+  const unmatched = [];
+  for (const tok of tokens.slice(0, 5)) {
+    const norm = normalizeThemeName(tok);
+    if (known.includes(norm)) {
+      matched.push(norm);
+    } else {
+      // попробовать нечёткое совпадение (case-insensitive + strip hyphen)
+      const fuzzy = known.find(k => k.toLowerCase() === norm.toLowerCase() || k.replace('-', '').toLowerCase() === norm.replace('-', '').toLowerCase());
+      if (fuzzy) matched.push(fuzzy);
+      else unmatched.push(tok);
+    }
+  }
+  return { matched, unmatched };
+}
+
+function applyParsedGallup(matched) {
+  state.gallupTop5 = matched.slice(0, 5).map((theme, i) => ({ theme, rank: i + 1 }));
+  updateGallupChipState();
+  updateTextPreview();
+}
+
+function updateTextPreview() {
+  const preview = document.getElementById('gallup-text-preview');
+  if (!preview) return;
+  const n = state.gallupTop5.length;
+  if (n === 0) {
+    preview.innerHTML = '<span style="color: var(--text-muted);">Введите 5 тем — здесь появится предпросмотр.</span>';
+  } else if (n < 5) {
+    preview.innerHTML = `<span style="color: var(--warning);">⚠️ Введено ${n}/5 тем. Нужно ещё ${5-n}.</span> Распознано: <b>${state.gallupTop5.map(t => t.theme).join(', ')}</b>`;
+  } else {
+    preview.innerHTML = `<span style="color: var(--success);">✅ Введено 5 тем:</span> <b>${state.gallupTop5.map(t => t.theme).join(' → ')}</b>`;
+  }
+}
+
+function handleTextInput() {
+  const textarea = document.getElementById('gallup-text-input');
+  if (!textarea) return;
+  textarea.addEventListener('input', () => {
+    const { matched, unmatched } = parseGallupText(textarea.value);
+    if (matched.length > 0) {
+      applyParsedGallup(matched);
+    } else {
+      state.gallupTop5 = [];
+      updateGallupChipState();
+      updateTextPreview();
+    }
+    if (unmatched.length > 0) {
+      const preview = document.getElementById('gallup-text-preview');
+      if (preview) {
+        preview.innerHTML += `<br><span style="color: var(--danger); font-size: 12px;">⚠️ Не распознано: ${unmatched.map(u => `"${u}"`).join(', ')}</span>`;
+      }
+    }
+  });
+}
+
 function renderGallupChips() {
   const container = document.getElementById('gallup-chips');
+  if (!container) return;
   container.innerHTML = '';
   Object.keys(THEME_DESCRIPTIONS).sort().forEach(theme => {
     const chip = document.createElement('button');
@@ -246,6 +323,7 @@ function renderGallupChips() {
     container.appendChild(chip);
   });
   updateGallupChipState();
+  updateTextPreview();
 }
 
 function toggleGallupChip(theme, chip) {
@@ -259,9 +337,14 @@ function toggleGallupChip(theme, chip) {
     }
     state.gallupTop5.push({ theme, rank: state.gallupTop5.length + 1 });
   }
-  // Перенумеровать ранги
   state.gallupTop5.forEach((t, i) => t.rank = i + 1);
   updateGallupChipState();
+  // Обновить textarea, чтобы отразить выбор
+  const textarea = document.getElementById('gallup-text-input');
+  if (textarea) {
+    textarea.value = state.gallupTop5.map(t => t.theme).join(', ');
+    updateTextPreview();
+  }
 }
 
 function updateGallupChipState() {
@@ -405,6 +488,9 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('header-meta').textContent = 'Бесплатный тест · 15 минут';
     }
   });
+
+  // Текстовый ввод Gallup-результата
+  handleTextInput();
 
   // Шкала: клик по цифре 1-5
   document.querySelectorAll('#scale .scale-btn').forEach(btn => {
