@@ -4,6 +4,11 @@
 
 const STORAGE_KEY = 'gallup_copy_state_v1';
 
+// База данных Gallup-результатов (заполняется разработчиком вручную из PDF).
+// Содержит известные Gallup топ-5 для людей, которые сдавали Gallup.
+// Загружается при старте и используется для автоподтягивания по имени.
+let GALLUP_DB = [];
+
 // =============================================================================
 // SUBMIT — отправка результатов
 // =============================================================================
@@ -309,6 +314,70 @@ function getMetaValues() {
   };
 }
 
+// =============================================================================
+// NAME LOOKUP — поиск в БД по имени
+// =============================================================================
+
+function handleNameLookup() {
+  const nameInput = document.getElementById('user-name');
+  if (!nameInput) return;
+
+  nameInput.addEventListener('input', () => {
+    const name = nameInput.value.trim();
+    const lookupStatus = document.getElementById('name-lookup-status');
+    const gallupSection = document.getElementById('gallup-section');
+
+    if (!name) {
+      if (lookupStatus) lookupStatus.innerHTML = '';
+      return;
+    }
+
+    const match = lookupGallupByName(name);
+    if (match) {
+      // Нашли в БД — автозаполняем
+      state.gallupTop5 = match.gallup_top5.map((t, i) => ({ theme: t.theme, rank: i + 1 }));
+      // Помечаем как "verified" — данные из БД, не нужно вводить вручную
+      state.gallupFromDB = true;
+      state.gallupMatchedEntry = match;
+      updateGallupChipState();
+      updateTextPreview();
+      updateMetaVisibility();
+      if (lookupStatus) {
+        const dateStr = match.gallup_date ? ` от ${match.gallup_date}` : '';
+        lookupStatus.innerHTML = `
+          <div style="background:#E8F5E9;border:1px solid #4CAF50;border-radius:8px;padding:12px 14px;font-size:13px;color:#1B5E20;margin-top:8px;">
+            ✅ <b>Найдено в БД:</b> ${escapeHtml(match.name)}<br>
+            Gallup топ-5: <b>${match.gallup_top5.map(t => escapeHtml(t.theme)).join(' → ')}</b>${dateStr}<br>
+            <span style="font-size:12px;color:#2E7D32;">Эти данные подставлены автоматически — проверять не нужно. Можете пройти тест и нажать «Отправить».</span>
+          </div>
+        `;
+      }
+      // Скрываем поле ручного ввода и мета-поля
+      if (gallupSection) {
+        gallupSection.style.display = 'none';
+      }
+    } else {
+      state.gallupTop5 = [];
+      state.gallupFromDB = false;
+      state.gallupMatchedEntry = null;
+      updateGallupChipState();
+      updateTextPreview();
+      updateMetaVisibility();
+      if (lookupStatus) {
+        lookupStatus.innerHTML = `
+          <div style="background:#FFF8E6;border:1px solid #F5C842;border-radius:8px;padding:12px 14px;font-size:13px;color:#6B4F00;margin-top:8px;">
+            ⚠️ <b>'${escapeHtml(name)}'</b> не найден в БД Gallup-результатов.<br>
+            <span style="font-size:12px;">Можете ввести свой Gallup топ-5 вручную (ниже) — но это менее надёжно чем если бы было в БД.</span>
+          </div>
+        `;
+      }
+      if (gallupSection) {
+        gallupSection.style.display = 'block';
+      }
+    }
+  });
+}
+
 function handleTextInput() {
   const textarea = document.getElementById('gallup-text-input');
   if (!textarea) return;
@@ -411,9 +480,14 @@ function clearState() {
 async function submitResults() {
   const scores = calculateScores(state.answers);
   const ranks = ranksFromScores(scores);
-  const meta = getMetaValues();
+  const meta = state.gallupFromDB
+    ? { gallup_date: state.gallupMatchedEntry?.gallup_date || 'unknown', gallup_confidence: 'pdf', gallup_source: 'database' }
+    : getMetaValues();
+  const userName = (document.getElementById('user-name')?.value || '').trim();
+
   const payload = {
     timestamp: new Date().toISOString(),
+    user_name: userName,
     answers_count: state.answers.filter(a => a !== null).length,
     predicted_top5: ranks.slice(0, 5).map(t => ({ theme: t.theme, score: t.score })),
     gallup_top5: state.gallupTop5,
@@ -432,14 +506,14 @@ async function submitResults() {
     const result = await response.json();
 
     if (response.ok && result.ok) {
-      // Считаем точность локально
       let accuracyMsg = '';
       if (payload.gallup_top5.length > 0) {
         const predSet = new Set(payload.predicted_top5.slice(0, 5).map(t => t.theme));
         const gallupSet = new Set(payload.gallup_top5.map(t => t.theme));
         const match = [...predSet].filter(t => gallupSet.has(t)).length;
-        accuracyMsg = `<br><span style="font-size:13px;">📈 Точность: <b>${match}/5 = ${match*20}%</b></span>`;
-        if (meta.gallup_confidence === 'guess' || meta.gallup_date === 'gt1y' || meta.gallup_date === 'unknown') {
+        const sourceLabel = state.gallupFromDB ? '🟢 из БД' : '⚪ вручную';
+        accuracyMsg = `<br><span style="font-size:13px;">📈 Точность: <b>${match}/5 = ${match*20}%</b> <span style="color:#666;">(${sourceLabel})</span></span>`;
+        if (!state.gallupFromDB && (meta.gallup_confidence === 'guess' || meta.gallup_date === 'gt1y' || meta.gallup_date === 'unknown')) {
           accuracyMsg += `<br><span style="font-size:12px;color:#B71C1C;">⚠️ Эти данные помечены как ненадёжные — для обучения использоваться не будут.</span>`;
         }
       } else {
@@ -497,10 +571,49 @@ function escapeHtml(s) {
 }
 
 // =============================================================================
+// GALLUP DATABASE
+// =============================================================================
+
+async function loadGallupDB() {
+  try {
+    const response = await fetch('data/gallup_db.json');
+    if (response.ok) {
+      GALLUP_DB = await response.json();
+      console.log(`[Gallup DB] Loaded ${GALLUP_DB.length} entries`);
+    } else {
+      console.warn('[Gallup DB] Could not load gallup_db.json');
+      GALLUP_DB = [];
+    }
+  } catch (e) {
+    console.warn('[Gallup DB] Error:', e);
+    GALLUP_DB = [];
+  }
+}
+
+function lookupGallupByName(name) {
+  if (!name || !GALLUP_DB.length) return null;
+  const normalized = name.trim().toLowerCase();
+  // Точное совпадение
+  let match = GALLUP_DB.find(e => e.name.toLowerCase() === normalized);
+  if (match) return match;
+  // Частичное совпадение (без дефиса, без окончания PDF)
+  const cleanName = normalized.replace(/\.pdf$/, '').replace(/-/g, '');
+  match = GALLUP_DB.find(e => {
+    const cleanE = e.name.toLowerCase().replace(/\.pdf$/, '').replace(/-/g, '');
+    return cleanE === cleanName || cleanE.includes(cleanName) || cleanName.includes(cleanE);
+  });
+  return match;
+}
+
+
+// =============================================================================
 // INIT
 // =============================================================================
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  // Загружаем БД Gallup-результатов
+  await loadGallupDB();
+
   document.getElementById('start-btn').addEventListener('click', startTest);
   document.getElementById('prev-btn').addEventListener('click', prevQuestion);
   document.getElementById('finish-btn').addEventListener('click', finishTest);
@@ -516,6 +629,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Текстовый ввод Gallup-результата
   handleTextInput();
+  // Поиск по имени в БД
+  handleNameLookup();
 
   // Шкала: клик по цифре 1-5
   document.querySelectorAll('#scale .scale-btn').forEach(btn => {

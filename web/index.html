@@ -146,8 +146,31 @@
     <div class="gallup-section">
       <h3>У вас есть результат Gallup?</h3>
       <p class="gallup-desc">
-        Если вы проходили оригинальный Gallup CliftonStrengths — введите свой топ-5 ниже.
-        Это поможет улучшить алгоритм (данные пойдут в обезличенную статистику).
+        Если вы проходили оригинальный Gallup CliftonStrengths — введите своё имя.
+        Система автоматически найдёт ваш Gallup-результат в базе данных.
+      </p>
+
+      <!-- Поиск по имени -->
+      <div style="background: var(--bg-subtle); border-radius: 12px; padding: 20px; margin: 16px 0;">
+        <p style="font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 8px;">
+          👤 Введите ваше имя/ID как в Gallup-отчёте
+        </p>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
+          Например: <code style="background: var(--bg-card); padding: 2px 6px; border-radius: 4px; font-size: 12px;">Alexandr-34</code> или <code style="background: var(--bg-card); padding: 2px 6px; border-radius: 4px; font-size: 12px;">Madina-34</code>
+        </p>
+        <input
+          id="user-name"
+          type="text"
+          placeholder="Имя как в Gallup-отчёте..."
+          style="width: 100%; padding: 12px; border: 1.5px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 15px; background: var(--bg-card); color: var(--text);"
+        />
+        <div id="name-lookup-status"></div>
+      </div>
+
+      <!-- Если не найдено в БД — показать ручной ввод -->
+      <div id="gallup-section">
+      <p style="font-size: 13px; color: var(--text-muted); margin: 16px 0 8px;">
+        Если вас нет в БД, введите Gallup-результат вручную:
       </p>
 
       <!-- Способ 1: текстовый ввод (самый быстрый) -->
@@ -197,7 +220,6 @@
           </div>
           <p>Скопируйте эти 5 названий и вставьте в поле выше.</p>
           <p><b>Если не помните точно</b> — лучше пропустите, чем ввести неправильно. Мусорные данные испортят обучение.</p>
-          <p><b>Если Gallup ещё не проходили</b> — просто оставьте поле пустым, всё равно пройдите тест (ваши ответы пригодятся, когда мы добавим больше данных).</p>
         </div>
       </details>
 
@@ -253,6 +275,59 @@
         <p style="font-size: 12px; color: var(--text-muted); margin-top: 12px;">
           💡 Эти данные помогают нам взвешивать качество. Свежие + подтверждённые данные идут в обучение с большим весом. Старые/ненадёжные используются только для оценки.
         </p>
+      </div>
+      </div>
+        <p style="font-size: 13px; font-weight: 600; margin-bottom: 12px;">
+          📅 Когда сдавали оригинальный Gallup?
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 6px 10px; background: var(--bg-card); border-radius: 6px; border: 1.5px solid transparent;">
+            <input type="radio" name="gallup-date" value="lt3m" style="margin: 0;">
+            <span>Менее 3 месяцев назад <span style="color: var(--success); font-size: 11px;">✓ идеально</span></span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 6px 10px; background: var(--bg-card); border-radius: 6px; border: 1.5px solid transparent;">
+            <input type="radio" name="gallup-date" value="3to6m" style="margin: 0;">
+            <span>3-6 месяцев назад <span style="color: var(--text-muted); font-size: 11px;">ок</span></span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 6px 10px; background: var(--bg-card); border-radius: 6px; border: 1.5px solid transparent;">
+            <input type="radio" name="gallup-date" value="6to12m" style="margin: 0;">
+            <span>6-12 месяцев назад <span style="color: var(--warning); font-size: 11px;">⚠️ могли измениться</span></span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 6px 10px; background: var(--bg-card); border-radius: 6px; border: 1.5px solid transparent;">
+            <input type="radio" name="gallup-date" value="gt1y" style="margin: 0;">
+            <span>Больше года назад <span style="color: var(--danger); font-size: 11px;">❌ ненадёжно</span></span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 6px 10px; background: var(--bg-card); border-radius: 6px; border: 1.5px solid transparent;">
+            <input type="radio" name="gallup-date" value="unknown" style="margin: 0;">
+            <span>Не помню / давно <span style="color: var(--danger); font-size: 11px;">❌ ненадёжно</span></span>
+          </label>
+        </div>
+
+        <p style="font-size: 13px; font-weight: 600; margin: 16px 0 12px;">
+          🎯 Насколько вы уверены в введённом топ-5?
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 6px 10px; background: var(--bg-card); border-radius: 6px; border: 1.5px solid transparent;">
+            <input type="radio" name="gallup-confidence" value="pdf" style="margin: 0;">
+            <span>Только что посмотрел в PDF-отчёте <span style="color: var(--success); font-size: 11px;">✓ лучший вариант</span></span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 6px 10px; background: var(--bg-card); border-radius: 6px; border: 1.5px solid transparent;">
+            <input type="radio" name="gallup-confidence" value="good" style="margin: 0;">
+            <span>Помню хорошо <span style="color: var(--text-muted); font-size: 11px;">ок</span></span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 6px 10px; background: var(--bg-card); border-radius: 6px; border: 1.5px solid transparent;">
+            <input type="radio" name="gallup-confidence" value="rough" style="margin: 0;">
+            <span>Примерно помню <span style="color: var(--warning); font-size: 11px;">⚠️ могут быть ошибки</span></span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 6px 10px; background: var(--bg-card); border-radius: 6px; border: 1.5px solid transparent;">
+            <input type="radio" name="gallup-confidence" value="guess" style="margin: 0;">
+            <span>Угадываю <span style="color: var(--danger); font-size: 11px;">❌ не использовать</span></span>
+          </label>
+        </div>
+        <p style="font-size: 12px; color: var(--text-muted); margin-top: 12px;">
+          💡 Эти данные помогают нам взвешивать качество. Свежие + подтверждённые данные идут в обучение с большим весом. Старые/ненадёжные используются только для оценки.
+        </p>
+      </div>
       </div>
 
       <div class="submit-row">
