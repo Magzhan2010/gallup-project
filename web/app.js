@@ -111,27 +111,103 @@ function finishTest() {
 }
 
 // =============================================================================
-// АЛГОРИТМ СКОРИНГА (детерминированный, инвертированная полярность)
+// АЛГОРИТМ СКОРИНГА — по методологии Gallup
 // =============================================================================
-// shift = 3 - answer:  5 → -2, 4 → -1, 3 → 0, 2 → +1, 1 → +2
-//   Это даёт +2 к LEFT (если ответ=1) и +2 к RIGHT (если ответ=5).
+// Основано на официальном техническом отчёте Gallup
+// "The Clifton StrengthsFinder 2.0 Technical Report" (2014):
+//
+//   "The calculation of scores is based on the MEAN of the intensity of
+//    self-description."
+//   "Absolute scores are used to rank the themes, with percentiles against
+//    the database norms and THEME RELIABILITIES used as subsidiary ranking
+//    factors."
+//
+// 1. Каждый ответ (1-5) → значение интенсивности
+// 2. Балл темы = СРЕДНЕЕ по её утверждениям (Gallup)
+// 3. Ранжирование по абсолютному баллу с поправкой на надёжность темы
+//    (Table 3 отчёта: test-retest reliability)
+
+function responseValue(answer, formula) {
+  const cfg = (typeof SCORING_CONFIG !== 'undefined') ? SCORING_CONFIG : { formula: 'sigmoid_soft' };
+  let v;
+  switch (cfg.formula) {
+    case 'linear':       v = answer - 3; break;
+    case 'sigmoid':      v = Math.tanh((answer - 3) / 1.2); break;
+    case 'sigmoid_soft': v = Math.tanh((answer - 3) / 2.0); break;
+    case 'guttman':      v = {1:-2, 2:-1, 3:0, 4:1, 5:2}[answer]; break;
+    case 'step':         v = {1:-2, 2:-0.5, 3:0, 4:0.5, 5:2}[answer]; break;
+    case 'weighted':     v = {1:-1, 2:-0.7, 3:0, 4:0.7, 5:1}[answer]; break;
+    default:             v = Math.tanh((answer - 3) / 2.0);
+  }
+  // Инверсия: в наших данных 1 = «точно левое утверждение», 5 = «точно правое»
+  return -v;
+}
 
 function calculateScores(answers) {
-  const scores = {};
+  const cfg = (typeof SCORING_CONFIG !== 'undefined') ? SCORING_CONFIG : {
+    useMean: true, ipsative: false, standardize: false, reliabilityMode: 'multiply'
+  };
+
+  const vals = {};
+  const push = (theme, v) => {
+    if (!vals[theme]) vals[theme] = [];
+    vals[theme].push(v);
+  };
+
   QUESTIONS.forEach((q, i) => {
     const a = answers[i];
     if (a == null) return;
-    // Эмпирически лучшая формула: sigmoid с инвертированной полярностью.
-    // 5 → −2 (НЕ левое), 4 → −1, 3 → 0, 2 → +1, 1 → +2 (точно левое)
-    // Затем tanh для плавного сглаживания (даёт +1-2% к top-10).
-    const raw = 3 - a;
-    const shift = Math.tanh(raw) * 2;
-    scores[q.left.theme] = (scores[q.left.theme] || 0) + shift;
-    scores[q.right.theme] = (scores[q.right.theme] || 0) - shift;
+    const v = responseValue(a);
+    if (Math.abs(v) < 1e-9) return;
+    if (v > 0) {
+      push(q.left.theme, v);
+      if (!cfg.ipsative) push(q.right.theme, -v);
+    } else {
+      push(q.right.theme, -v);
+      if (!cfg.ipsative) push(q.left.theme, v);
+    }
   });
-  Object.keys(THEME_DESCRIPTIONS).forEach(t => {
-    if (!(t in scores)) scores[t] = 0;
+
+  // Агрегация: MEAN (Gallup) или SUM
+  const allThemes = Object.keys(THEME_DESCRIPTIONS);
+  const scores = {};
+  allThemes.forEach(t => {
+    const arr = vals[t] || [];
+    scores[t] = cfg.useMean
+      ? (arr.length ? arr.reduce((s, x) => s + x, 0) / arr.length : 0)
+      : (arr.length ? arr.reduce((s, x) => s + x, 0) : 0);
   });
+
+  // Стандартизация внутри человека (убирает response bias)
+  if (cfg.standardize) {
+    const arr = allThemes.map(t => scores[t]);
+    const mean = arr.reduce((s, x) => s + x, 0) / arr.length;
+    const variance = arr.reduce((s, x) => s + (x - mean) ** 2, 0) / arr.length;
+    const sd = Math.sqrt(variance);
+    if (sd > 1e-9) {
+      allThemes.forEach(t => { scores[t] = (scores[t] - mean) / sd; });
+    }
+  }
+
+  // Поправка на надёжность темы (Gallup: "theme reliabilities used as
+  // subsidiary ranking factors") — Table 3 отчёта
+  if (typeof THEME_RELIABILITY !== 'undefined') {
+    const rel = THEME_RELIABILITY;
+    if (cfg.reliabilityMode === 'shrink') {
+      const arr = allThemes.map(t => scores[t]);
+      const mean = arr.reduce((s, x) => s + x, 0) / arr.length;
+      allThemes.forEach(t => {
+        const r = rel[t] !== undefined ? rel[t] : 0.65;
+        scores[t] = mean + (scores[t] - mean) * r;
+      });
+    } else {
+      allThemes.forEach(t => {
+        const r = rel[t] !== undefined ? rel[t] : 0.65;
+        scores[t] *= r;
+      });
+    }
+  }
+
   return scores;
 }
 
@@ -190,13 +266,7 @@ function renderResults() {
 // =============================================================================
 // ДОМЕНЫ (4 области Gallup)
 // =============================================================================
-
-const DOMAIN_NAMES = {
-  "Executing":           "Executing — Исполнение",
-  "Influencing":         "Influencing — Влияние",
-  "Relationship Building": "Relationship Building — Отношения",
-  "Strategic Thinking":  "Strategic Thinking — Стратегия",
-};
+// DOMAIN_NAMES приходит из data.js (сгенерировано build_web.py)
 
 const DOMAIN_COLORS = {
   "Executing":           "#DC1E2D",
