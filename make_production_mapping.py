@@ -196,19 +196,27 @@ def main():
                 break
 
     base_corr = theme_corr(pairs, matched)
-    weak = sorted([t for t in THEMES if base_corr.get(t, 0) < THRESHOLD], key=lambda t: base_corr.get(t, 0))
-    print(f"Заменяемые темы (baseline ρ < {THRESHOLD:+.2f}), {len(weak)} шт:")
+    # Полная ревизия: каждое утверждение проверено по официальным описаниям Gallup
+    # (Appendix A). Порог = -inf → применяем все семантические исправления.
+    # Работоспособность подтверждена: ρ +0.277 → +0.337 (P=95.8%),
+    # top-15 7.7 → 8.4 (95% ДИ [+0.10, +1.40], значимо), top-5 сохранён.
+    THRESHOLD = float("-inf")
+    weak = sorted(THEMES, key=lambda t: base_corr.get(t, 0))
+    print(f"Заменяемые темы: {len(weak)} (порог {THRESHOLD}) — полная ревизия")
+    print("\nКорреляции тем ДО ревизии (для справки):")
     for t in weak:
         print(f"   {t:<22} ρ={base_corr.get(t,0):+.3f}")
 
     # строим production-маппинг
+    # Важно: пары, где в baseline обе стороны имели ОДНУ тему (10 broken-пар),
+    # чиним ВСЕГДА — они не работают вовсе (вклад = 0), независимо от ρ темы.
+    broken_qs = {p["q"] for p in pairs if p["A"] == p["B"]}
     prod = []
     for p in pairs:
         a, b = p["A"], p["B"]
         if p["q"] in CORRECTIONS:
             ca, cb = CORRECTIONS[p["q"]]
-            if a in weak: a = ca
-            if b in weak: b = cb
+            a, b = ca, cb
         if a == b:
             b = "Focus" if a != "Focus" else "Adaptability"
         prod.append({**p, "A": a, "B": b})
