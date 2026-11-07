@@ -84,18 +84,18 @@ const QUESTIONS = [
     "id": 8,
     "left": {
       "text": "Я хорошо умею выбирать подарки",
-      "theme": "Individualization"
+      "theme": "Woo"
     },
     "right": {
       "text": "Я дарю подарки, которые всем нравятся",
-      "theme": "Restorative"
+      "theme": "Positivity"
     }
   },
   {
     "id": 9,
     "left": {
       "text": "Начинать разговор, для меня это большое усилие",
-      "theme": "Activator"
+      "theme": "Relator"
     },
     "right": {
       "text": "Я люблю завязать беседу с незнакомым человеком, это дает мне положительный заряд",
@@ -121,7 +121,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Я думаю, что люди достигают лучших результатов, когда их кто-то подталкивает",
-      "theme": "Achiever"
+      "theme": "Activator"
     }
   },
   {
@@ -143,7 +143,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Мои амбиции направляют мою жизнь",
-      "theme": "Activator"
+      "theme": "Significance"
     }
   },
   {
@@ -187,7 +187,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Я хорошо умею реорганизовывать вещи для повышения эффективности",
-      "theme": "Adaptability"
+      "theme": "Focus"
     }
   },
   {
@@ -242,7 +242,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Совпадения случайны и не имеют особого значения",
-      "theme": "Restorative"
+      "theme": "Analytical"
     }
   },
   {
@@ -264,7 +264,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Я стараюсь тщательно выбирать людей, с которыми я провожу время",
-      "theme": "Restorative"
+      "theme": "Relator"
     }
   },
   {
@@ -297,7 +297,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Мне известны все факторы, влияющие на ситуацию",
-      "theme": "Context"
+      "theme": "Analytical"
     }
   },
   {
@@ -319,7 +319,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Известные лидеры подавляют меня",
-      "theme": "Significance"
+      "theme": "Self-Assurance"
     }
   },
   {
@@ -348,7 +348,7 @@ const QUESTIONS = [
     "id": 32,
     "left": {
       "text": "Я беззаботный человек",
-      "theme": "Command"
+      "theme": "Positivity"
     },
     "right": {
       "text": "Я более серьезный, зрелый человек, чем мои коллеги и друзья",
@@ -359,11 +359,11 @@ const QUESTIONS = [
     "id": 33,
     "left": {
       "text": "Я пользуюсь каждой возможностью",
-      "theme": "Command"
+      "theme": "Activator"
     },
     "right": {
       "text": "Я стараюсь избегать ошибок",
-      "theme": "Restorative"
+      "theme": "Deliberative"
     }
   },
   {
@@ -385,7 +385,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Я реалист",
-      "theme": "Restorative"
+      "theme": "Analytical"
     }
   },
   {
@@ -396,7 +396,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Работа - всего лишь способ заработать на жизнь",
-      "theme": "Woo"
+      "theme": "Consistency"
     }
   },
   {
@@ -429,7 +429,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Я практичный человек",
-      "theme": "Focus"
+      "theme": "Analytical"
     }
   },
   {
@@ -462,7 +462,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Я пользуюсь точной, проверенной информацией",
-      "theme": "Belief"
+      "theme": "Input"
     }
   },
   {
@@ -480,18 +480,18 @@ const QUESTIONS = [
     "id": 44,
     "left": {
       "text": "Я люблю разбираться в деталях",
-      "theme": "Restorative"
+      "theme": "Analytical"
     },
     "right": {
       "text": "Если что-то не сломано, не нужно его пытаться чинить",
-      "theme": "Achiever"
+      "theme": "Restorative"
     }
   },
   {
     "id": 45,
     "left": {
       "text": "Я предпочитаю быть среди похожих на меня людей",
-      "theme": "Input"
+      "theme": "Consistency"
     },
     "right": {
       "text": "Я расстраиваюсь, когда другие люди остаются в стороне",
@@ -502,29 +502,29 @@ const QUESTIONS = [
     "id": 46,
     "left": {
       "text": "Я работаю в том же темпе, что и большинство людей, и не чувствую необходимости работать больше или дольше других",
-      "theme": "Empathy"
+      "theme": "Adaptability"
     },
     "right": {
       "text": "Я очень работоспособный человек, все знают, что я всегда работаю дольше и интенсивнее, чем большинство людей",
-      "theme": "Restorative"
+      "theme": "Achiever"
     }
   },
   {
     "id": 47,
     "left": {
       "text": "Все, что связано с улучшением человечества, привклекают мое внимание",
-      "theme": "Connectedness"
+      "theme": "Positivity"
     },
     "right": {
       "text": "Все, что связано со спортом или развлечениями, привлекает мое внимание",
-      "theme": "Ideation"
+      "theme": "Competition"
     }
   },
   {
     "id": 48,
     "left": {
       "text": "Я очень аккуратный человек",
-      "theme": "Arranger"
+      "theme": "Discipline"
     },
     "right": {
       "text": "Я очень упрямый человек",
@@ -535,11 +535,11 @@ const QUESTIONS = [
     "id": 49,
     "left": {
       "text": "Люди часто делятся со мной своими чувствами",
-      "theme": "Empathy"
+      "theme": "Relator"
     },
     "right": {
       "text": "Обычно я смотрю на вещи объективно",
-      "theme": "Restorative"
+      "theme": "Analytical"
     }
   },
   {
@@ -572,7 +572,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Я постоянно расширяю круг своих друзей",
-      "theme": "Includer"
+      "theme": "Woo"
     }
   },
   {
@@ -627,7 +627,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Я добиваюсь прогресса, преодолевая свои слабости",
-      "theme": "Restorative"
+      "theme": "Achiever"
     }
   },
   {
@@ -678,7 +678,7 @@ const QUESTIONS = [
     "id": 62,
     "left": {
       "text": "Счастье - это деньги",
-      "theme": "Arranger"
+      "theme": "Significance"
     },
     "right": {
       "text": "Счастье не в деньгах",
@@ -711,7 +711,7 @@ const QUESTIONS = [
     "id": 65,
     "left": {
       "text": "В поиске верных решений я полагаюсь на специалистов",
-      "theme": "Belief"
+      "theme": "Input"
     },
     "right": {
       "text": "Видение проблем и путей их решения приходит ко мне само собой",
@@ -755,11 +755,11 @@ const QUESTIONS = [
     "id": 69,
     "left": {
       "text": "Я стараюсь оставаться в зоне комфорта",
-      "theme": "Arranger"
+      "theme": "Consistency"
     },
     "right": {
       "text": "Я ищу острых ощущений",
-      "theme": "Achiever"
+      "theme": "Activator"
     }
   },
   {
@@ -770,7 +770,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Мне нравится обсуждать масштабные идеи",
-      "theme": "Ideation"
+      "theme": "Intellection"
     }
   },
   {
@@ -821,7 +821,7 @@ const QUESTIONS = [
     "id": 75,
     "left": {
       "text": "Я движим своими целями",
-      "theme": "Focus"
+      "theme": "Consistency"
     },
     "right": {
       "text": "Мной движет моя миссия",
@@ -843,7 +843,7 @@ const QUESTIONS = [
     "id": 77,
     "left": {
       "text": "Мне нравится заботиться о настоящем",
-      "theme": "Empathy"
+      "theme": "Adaptability"
     },
     "right": {
       "text": "Я живу для будущего",
@@ -869,14 +869,14 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Важно быть успешным",
-      "theme": "Achiever"
+      "theme": "Significance"
     }
   },
   {
     "id": 80,
     "left": {
       "text": "Я принимаю то, что дает мне жизнь",
-      "theme": "Discipline"
+      "theme": "Adaptability"
     },
     "right": {
       "text": "Мне нравится видеть перспективу, наблюдая за проявлениями закономерностей",
@@ -891,7 +891,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Я склонный к самоанализу человек",
-      "theme": "Analytical"
+      "theme": "Intellection"
     }
   },
   {
@@ -920,7 +920,7 @@ const QUESTIONS = [
     "id": 84,
     "left": {
       "text": "Мне нравится, когда меня слушают",
-      "theme": "Command"
+      "theme": "Significance"
     },
     "right": {
       "text": "Я люблю слушать",
@@ -935,14 +935,14 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Я человек широких взглядов",
-      "theme": "Command"
+      "theme": "Input"
     }
   },
   {
     "id": 86,
     "left": {
       "text": "Я доволен успехами в своей жизни",
-      "theme": "Context"
+      "theme": "Positivity"
     },
     "right": {
       "text": "Я беспокоюсь о своем будущем",
@@ -964,18 +964,18 @@ const QUESTIONS = [
     "id": 88,
     "left": {
       "text": "Я внимательно отношусь к чувствам людей",
-      "theme": "Deliberative"
+      "theme": "Empathy"
     },
     "right": {
       "text": "Я уделяю больше внимание деталям",
-      "theme": "Maximizer"
+      "theme": "Analytical"
     }
   },
   {
     "id": 89,
     "left": {
       "text": "Я мыслю практически",
-      "theme": "Context"
+      "theme": "Analytical"
     },
     "right": {
       "text": "Я мыслю творчески и стратегически",
@@ -1052,7 +1052,7 @@ const QUESTIONS = [
     "id": 96,
     "left": {
       "text": "Я часто бываю забывчив",
-      "theme": "Strategic"
+      "theme": "Adaptability"
     },
     "right": {
       "text": "Мне свойственно проверять, все ли в порядке, столько раз, сколько необходимо",
@@ -1074,7 +1074,7 @@ const QUESTIONS = [
     "id": 98,
     "left": {
       "text": "Преодоление слабостей и устранение недостатков - это мой путь к успеху",
-      "theme": "Strategic"
+      "theme": "Restorative"
     },
     "right": {
       "text": "Развитие моих талантов - это мой путь к достижению",
@@ -1129,7 +1129,7 @@ const QUESTIONS = [
     "id": 103,
     "left": {
       "text": "Мне хотелось бы иметь несколько близких друзей, о которых я много знаю",
-      "theme": "Developer"
+      "theme": "Relator"
     },
     "right": {
       "text": "Я всегда завожу новые дружеские отношения",
@@ -1144,7 +1144,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "У меня репутация человека с хорошим чувством юмора",
-      "theme": "Empathy"
+      "theme": "Positivity"
     }
   },
   {
@@ -1155,7 +1155,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Я стараюсь узнать, что ждет меня в будущем",
-      "theme": "Maximizer"
+      "theme": "Focus"
     }
   },
   {
@@ -1166,14 +1166,14 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Я люблю вдохновлять людей",
-      "theme": "Positivity"
+      "theme": "Developer"
     }
   },
   {
     "id": 107,
     "left": {
       "text": "Я очень закрытый человек",
-      "theme": "Developer"
+      "theme": "Intellection"
     },
     "right": {
       "text": "Моя жизнь - открытая книга",
@@ -1184,11 +1184,11 @@ const QUESTIONS = [
     "id": 108,
     "left": {
       "text": "Я щедрый человек",
-      "theme": "Developer"
+      "theme": "Positivity"
     },
     "right": {
       "text": "Я бережливый человек",
-      "theme": "Deliberative"
+      "theme": "Discipline"
     }
   },
   {
@@ -1206,7 +1206,7 @@ const QUESTIONS = [
     "id": 110,
     "left": {
       "text": "Иногда я прибегаю к лести",
-      "theme": "Strategic"
+      "theme": "Woo"
     },
     "right": {
       "text": "Я добросовестный человек",
@@ -1232,7 +1232,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Я щедр на похвалы и на выражение признания людям, с которыми я работаю",
-      "theme": "Positivity"
+      "theme": "Developer"
     }
   },
   {
@@ -1272,7 +1272,7 @@ const QUESTIONS = [
     "id": 116,
     "left": {
       "text": "Мне нравится одиночество",
-      "theme": "Strategic"
+      "theme": "Intellection"
     },
     "right": {
       "text": "Я скучаю по друзьям",
@@ -1331,7 +1331,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Мне нравится ходить на спортивные мероприятия",
-      "theme": "Discipline"
+      "theme": "Competition"
     }
   },
   {
@@ -1342,7 +1342,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Я всегда открыт(-а) для новых впечатлений",
-      "theme": "Developer"
+      "theme": "Input"
     }
   },
   {
@@ -1375,7 +1375,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Мне не нравится общаться с людьми, которые не умеют расслабляться",
-      "theme": "Positivity"
+      "theme": "Adaptability"
     }
   },
   {
@@ -1386,7 +1386,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Я выбираю трудные предметы для изучения",
-      "theme": "Maximizer"
+      "theme": "Learner"
     }
   },
   {
@@ -1397,14 +1397,14 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Чувство ответственности заставляет меня двигаться вперед",
-      "theme": "Responsibility"
+      "theme": "Achiever"
     }
   },
   {
     "id": 128,
     "left": {
       "text": "Я морально поддерживаю людей",
-      "theme": "Ideation"
+      "theme": "Empathy"
     },
     "right": {
       "text": "Я делаю людей сильнее",
@@ -1415,11 +1415,11 @@ const QUESTIONS = [
     "id": 129,
     "left": {
       "text": "Я слишком доверяю людям",
-      "theme": "Positivity"
+      "theme": "Relator"
     },
     "right": {
       "text": "У меня слишком большие амбиции",
-      "theme": "Developer"
+      "theme": "Significance"
     }
   },
   {
@@ -1448,18 +1448,18 @@ const QUESTIONS = [
     "id": 132,
     "left": {
       "text": "Я думаю, что при удачно сложившихся обстоятельствах большинство людей пойдет на кражу",
-      "theme": "Ideation"
+      "theme": "Belief"
     },
     "right": {
       "text": "Я считаю, что тех, кто ворует, следует наказывать",
-      "theme": "Command"
+      "theme": "Consistency"
     }
   },
   {
     "id": 133,
     "left": {
       "text": "Мне нужно получать удовольствие от своей работы",
-      "theme": "Maximizer"
+      "theme": "Positivity"
     },
     "right": {
       "text": "Принятие - моя самая большая потребность",
@@ -1470,7 +1470,7 @@ const QUESTIONS = [
     "id": 134,
     "left": {
       "text": "Я благоразумный человек",
-      "theme": "Ideation"
+      "theme": "Deliberative"
     },
     "right": {
       "text": "Я ответственный человек",
@@ -1481,7 +1481,7 @@ const QUESTIONS = [
     "id": 135,
     "left": {
       "text": "Большая часть моих мыслей и энергии направлены на \"здесь и сейчас\"",
-      "theme": "Intellection"
+      "theme": "Adaptability"
     },
     "right": {
       "text": "Я стараюсь научиться как можно большему, изучая прошлое",
@@ -1492,7 +1492,7 @@ const QUESTIONS = [
     "id": 136,
     "left": {
       "text": "Я удовлетворен, когда делаю все, что в моих силах",
-      "theme": "Ideation"
+      "theme": "Achiever"
     },
     "right": {
       "text": "Я стремлюсь изменить мир к лучшему",
@@ -1507,7 +1507,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Мне необходимо, чтобы меня знали и понимали",
-      "theme": "Strategic"
+      "theme": "Significance"
     }
   },
   {
@@ -1536,7 +1536,7 @@ const QUESTIONS = [
     "id": 140,
     "left": {
       "text": "Помогая другим, я обретаю цель",
-      "theme": "Focus"
+      "theme": "Developer"
     },
     "right": {
       "text": "У людей должна быть свобода жить так, как они хотят",
@@ -1551,7 +1551,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Я стремлюсь к служебному росту",
-      "theme": "Discipline"
+      "theme": "Significance"
     }
   },
   {
@@ -1562,14 +1562,14 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Я иду на риск",
-      "theme": "Deliberative"
+      "theme": "Activator"
     }
   },
   {
     "id": 143,
     "left": {
       "text": "25% своего времени я думаю о будущем",
-      "theme": "Ideation"
+      "theme": "Context"
     },
     "right": {
       "text": "70% своего времени я думаю о будущем",
@@ -1580,7 +1580,7 @@ const QUESTIONS = [
     "id": 144,
     "left": {
       "text": "Я вдохновляю друзей на действия",
-      "theme": "Developer"
+      "theme": "Activator"
     },
     "right": {
       "text": "Я привношу гармонию в рабочий коллектив",
@@ -1591,18 +1591,18 @@ const QUESTIONS = [
     "id": 145,
     "left": {
       "text": "Мне нравятся предсказуемые вещи",
-      "theme": "Discipline"
+      "theme": "Consistency"
     },
     "right": {
       "text": "Я нахожу перемены захватывающими",
-      "theme": "Achiever"
+      "theme": "Adaptability"
     }
   },
   {
     "id": 146,
     "left": {
       "text": "С учетом всего объема выполняемой мной работы моя обычная рабочая неделя составляет 35-50 часов",
-      "theme": "Includer"
+      "theme": "Harmony"
     },
     "right": {
       "text": "С учетом всего объема выполняемой мной работы моя обычная рабочая неделя превышает 60 часов",
@@ -1624,11 +1624,11 @@ const QUESTIONS = [
     "id": 148,
     "left": {
       "text": "Я с легкостью принимаюсь за новые задачи",
-      "theme": "Includer"
+      "theme": "Activator"
     },
     "right": {
       "text": "Мне сложно доводить проекты до конца",
-      "theme": "Focus"
+      "theme": "Adaptability"
     }
   },
   {
@@ -1646,7 +1646,7 @@ const QUESTIONS = [
     "id": 150,
     "left": {
       "text": "Мне легко расплакаться",
-      "theme": "Individualization"
+      "theme": "Empathy"
     },
     "right": {
       "text": "У меня твердые убеждения",
@@ -1668,7 +1668,7 @@ const QUESTIONS = [
     "id": 152,
     "left": {
       "text": "При необходимости я могу подолгу концентрироваться на работе, например целую ночь",
-      "theme": "Individualization"
+      "theme": "Focus"
     },
     "right": {
       "text": "Я могу концентрироваться на работе или учебе обычно не дольше часа",
@@ -1683,25 +1683,25 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Я постоянно добиваюсь хороших результатов",
-      "theme": "Activator"
+      "theme": "Discipline"
     }
   },
   {
     "id": 154,
     "left": {
       "text": "Я способен перехитрить других людей",
-      "theme": "Strategic"
+      "theme": "Competition"
     },
     "right": {
       "text": "Многие люди меня подавляют",
-      "theme": "Harmony"
+      "theme": "Self-Assurance"
     }
   },
   {
     "id": 155,
     "left": {
       "text": "Я наиболее эффективен, когда выполняю несколько задач одновременно",
-      "theme": "Individualization"
+      "theme": "Arranger"
     },
     "right": {
       "text": "Я концентрируюсь только на одной задаче",
@@ -1712,18 +1712,18 @@ const QUESTIONS = [
     "id": 156,
     "left": {
       "text": "Я стараюсь следить за своим здоровьем",
-      "theme": "Individualization"
+      "theme": "Restorative"
     },
     "right": {
       "text": "Я ищу новых впечатлений",
-      "theme": "Achiever"
+      "theme": "Input"
     }
   },
   {
     "id": 157,
     "left": {
       "text": "Я хороший инициатор",
-      "theme": "Individualization"
+      "theme": "Activator"
     },
     "right": {
       "text": "Я всегда довожу дело до конца",
@@ -1745,7 +1745,7 @@ const QUESTIONS = [
     "id": 159,
     "left": {
       "text": "Моя голова часто занята цифрами",
-      "theme": "Individualization"
+      "theme": "Analytical"
     },
     "right": {
       "text": "Я часто размышляю об увиденной красоте",
@@ -1760,7 +1760,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Я предпочитаю говорить о спорте или развлечениях",
-      "theme": "Communication"
+      "theme": "Competition"
     }
   },
   {
@@ -1789,7 +1789,7 @@ const QUESTIONS = [
     "id": 163,
     "left": {
       "text": "Я легко формулирую мысли",
-      "theme": "Strategic"
+      "theme": "Communication"
     },
     "right": {
       "text": "Иногда мне трудно выразить свои лучшие идеи",
@@ -1804,7 +1804,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Мне нравится разбираться, как устроены окружающие нас вещи",
-      "theme": "Restorative"
+      "theme": "Input"
     }
   },
   {
@@ -1815,14 +1815,14 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Мне необходима физическая активность",
-      "theme": "Achiever"
+      "theme": "Adaptability"
     }
   },
   {
     "id": 166,
     "left": {
       "text": "Мне нравятся лекции",
-      "theme": "Individualization"
+      "theme": "Learner"
     },
     "right": {
       "text": "Мне нравятся обсуждения в группе",
@@ -1848,7 +1848,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Я хочу разбогатеть",
-      "theme": "Individualization"
+      "theme": "Significance"
     }
   },
   {
@@ -1866,7 +1866,7 @@ const QUESTIONS = [
     "id": 170,
     "left": {
       "text": "Новая идея поднимает мне настроение на весь день",
-      "theme": "Empathy"
+      "theme": "Ideation"
     },
     "right": {
       "text": "День прошел хорошо, если мне удалось выполнить поставленные передо мной задачи",
@@ -1903,7 +1903,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Главное - действовать правильно",
-      "theme": "Consistency"
+      "theme": "Belief"
     }
   },
   {
@@ -1936,7 +1936,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Я лучше знаю свои слабые стороны, чем свои сильные стороны",
-      "theme": "Relator"
+      "theme": "Developer"
     }
   },
   {
@@ -1965,7 +1965,7 @@ const QUESTIONS = [
     "id": 179,
     "left": {
       "text": "В жизни случайностей не бывает",
-      "theme": "Strategic"
+      "theme": "Connectedness"
     },
     "right": {
       "text": "Не все имеет особое значение",
@@ -1976,7 +1976,7 @@ const QUESTIONS = [
     "id": 180,
     "left": {
       "text": "Если бы мне выдали премию на работе, я бы предпочел(-ла) получить 100 000 рублей сейчас",
-      "theme": "Learner"
+      "theme": "Activator"
     },
     "right": {
       "text": "Если бы мне выдали премию на работе, я бы предпочел(-ла) получать по 10 000 рублей в месяц в течение года",
@@ -2009,11 +2009,11 @@ const QUESTIONS = [
     "id": 183,
     "left": {
       "text": "Моя жизнь похожа на книгу, для которой я продолжаю писать захватывающие главы",
-      "theme": "Focus"
+      "theme": "Futuristic"
     },
     "right": {
       "text": "Иногда я чувствую, что жизнь проходит слишком быстро",
-      "theme": "Empathy"
+      "theme": "Context"
     }
   },
   {
@@ -2024,7 +2024,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Мир полон интересных вещей, и я хочу попробовать все",
-      "theme": "Responsibility"
+      "theme": "Input"
     }
   },
   {
@@ -2035,7 +2035,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Важно быть разносторонним человеком",
-      "theme": "Significance"
+      "theme": "Learner"
     }
   },
   {
@@ -2053,18 +2053,18 @@ const QUESTIONS = [
     "id": 187,
     "left": {
       "text": "Я всегда думаю на шаг вперед",
-      "theme": "Responsibility"
+      "theme": "Strategic"
     },
     "right": {
       "text": "Я принимаю решения, основываясь на своих чувствах",
-      "theme": "Empathy"
+      "theme": "Intellection"
     }
   },
   {
     "id": 188,
     "left": {
       "text": "Когда я строю планы, я продумываю возможные варианты развития событий",
-      "theme": "Discipline"
+      "theme": "Strategic"
     },
     "right": {
       "text": "Сложно предугадать будущее",
@@ -2079,7 +2079,7 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Просчитанные риски делают жизнь более интересной",
-      "theme": "Input"
+      "theme": "Activator"
     }
   },
   {
@@ -2097,11 +2097,11 @@ const QUESTIONS = [
     "id": 191,
     "left": {
       "text": "Мы должны прожить свою жизнь так, чтобы она служила примером для других",
-      "theme": "Relator"
+      "theme": "Significance"
     },
     "right": {
       "text": "Цель жизни - быть счастливым",
-      "theme": "Focus"
+      "theme": "Positivity"
     }
   },
   {
@@ -2178,14 +2178,14 @@ const QUESTIONS = [
     },
     "right": {
       "text": "Я достигаю наилучших результатов, работая вечером",
-      "theme": "Activator"
+      "theme": "Adaptability"
     }
   },
   {
     "id": 199,
     "left": {
       "text": "Если бы мне неожиданно выставили счет, я бы предпочел(-ла) заплатить 100 000 рублей сейчас",
-      "theme": "Analytical"
+      "theme": "Activator"
     },
     "right": {
       "text": "Если бы мне неожиданно выставили счет, я бы предпочел(-ла) платить по 10 000 рублей в месяц в течение года",
@@ -2196,7 +2196,7 @@ const QUESTIONS = [
     "id": 200,
     "left": {
       "text": "Я считаю, что люди должны больше руководствоваться логикой",
-      "theme": "Positivity"
+      "theme": "Analytical"
     },
     "right": {
       "text": "Мне очень легко понять, что чувствует другой человек",
