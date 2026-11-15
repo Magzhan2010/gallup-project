@@ -109,105 +109,46 @@ function finishTest() {
   renderResults();
   document.getElementById('header-meta').textContent = 'Готово ✓';
 }
-
 // =============================================================================
-// АЛГОРИТМ СКОРИНГА — по методологии Gallup
+// АЛГОРИТМ СКОРИНГА v3 (собирается build_v3.py, проверка — leave-one-out)
 // =============================================================================
-// Основано на официальном техническом отчёте Gallup
-// "The Clifton StrengthsFinder 2.0 Technical Report" (2014):
-//
-//   "The calculation of scores is based on the MEAN of the intensity of
-//    self-description."
-//   "Absolute scores are used to rank the themes, with percentiles against
-//    the database norms and THEME RELIABILITIES used as subsidiary ranking
-//    factors."
-//
-// 1. Каждый ответ (1-5) → значение интенсивности
-// 2. Балл темы = СРЕДНЕЕ по её утверждениям (Gallup)
-// 3. Ранжирование по абсолютному баллу с поправкой на надёжность темы
-//    (Table 3 отчёта: test-retest reliability)
-
-function responseValue(answer, formula) {
-  const cfg = (typeof SCORING_CONFIG !== 'undefined') ? SCORING_CONFIG : { formula: 'sigmoid_soft' };
-  let v;
-  switch (cfg.formula) {
-    case 'linear':       v = answer - 3; break;
-    case 'sigmoid':      v = Math.tanh((answer - 3) / 1.2); break;
-    case 'sigmoid_soft': v = Math.tanh((answer - 3) / 2.0); break;
-    case 'guttman':      v = {1:-2, 2:-1, 3:0, 4:1, 5:2}[answer]; break;
-    case 'step':         v = {1:-2, 2:-0.5, 3:0, 4:0.5, 5:2}[answer]; break;
-    case 'weighted':     v = {1:-1, 2:-0.7, 3:0, 4:0.7, 5:1}[answer]; break;
-    default:             v = Math.tanh((answer - 3) / 2.0);
-  }
-  // Инверсия: в наших данных 1 = «точно левое утверждение», 5 = «точно правое»
-  return -v;
-}
+// Ответ: 1 = точно левое утверждение, 5 = точно правое, 3 = нейтрально.
+// 1. Каждое утверждение даёт + теме, которую описывает, или − теме, противоположность
+//    которой описывает (q.left.themes / q.right.themes).
+// 2. Неипсативно (отчёт Gallup 2014: <30% пунктов ипсативны): выбранная сторона получает
+//    интенсивность ответа, невыбранная — только штраф cOther от неё.
+// 3. У каждой пары свой вес q.w (насколько она согласуется с реальными Gallup-отчётами).
+// 4. Балл темы = взвешенное среднее по её утверждениям.
 
 function calculateScores(answers) {
-  const cfg = (typeof SCORING_CONFIG !== 'undefined') ? SCORING_CONFIG : {
-    useMean: true, ipsative: false, standardize: false, reliabilityMode: 'multiply'
-  };
+  const cOther = (typeof SCORING_CONFIG !== 'undefined' && SCORING_CONFIG.cOther != null)
+    ? SCORING_CONFIG.cOther : 0.5;
+  const sum = {}, denom = {};
+  Object.keys(THEME_DESCRIPTIONS).forEach(t => { sum[t] = 0; denom[t] = 0; });
 
-  const vals = {};
-  const push = (theme, v) => {
-    if (!vals[theme]) vals[theme] = [];
-    vals[theme].push(v);
+  const add = (themes, amount) => {
+    for (const [t, w] of Object.entries(themes || {})) sum[t] += w * amount;
   };
 
   QUESTIONS.forEach((q, i) => {
+    const w = q.w != null ? q.w : 1;
+    for (const side of [q.left, q.right]) {
+      for (const [t, k] of Object.entries(side.themes || {})) denom[t] += Math.abs(k) * w;
+    }
     const a = answers[i];
     if (a == null) return;
-    const v = responseValue(a);
-    if (Math.abs(v) < 1e-9) return;
-    if (v > 0) {
-      push(q.left.theme, v);
-      if (!cfg.ipsative) push(q.right.theme, -v);
-    } else {
-      push(q.right.theme, -v);
-      if (!cfg.ipsative) push(q.left.theme, v);
+    const x = a - 3;            // +2 = точно правое, −2 = точно левое
+    if (x > 0) {
+      add(q.right.themes, w * x);
+      add(q.left.themes, -cOther * w * x);
+    } else if (x < 0) {
+      add(q.left.themes, -w * x);
+      add(q.right.themes, cOther * w * x);
     }
   });
 
-  // Агрегация: MEAN (Gallup) или SUM
-  const allThemes = Object.keys(THEME_DESCRIPTIONS);
   const scores = {};
-  allThemes.forEach(t => {
-    const arr = vals[t] || [];
-    scores[t] = cfg.useMean
-      ? (arr.length ? arr.reduce((s, x) => s + x, 0) / arr.length : 0)
-      : (arr.length ? arr.reduce((s, x) => s + x, 0) : 0);
-  });
-
-  // Стандартизация внутри человека (убирает response bias)
-  if (cfg.standardize) {
-    const arr = allThemes.map(t => scores[t]);
-    const mean = arr.reduce((s, x) => s + x, 0) / arr.length;
-    const variance = arr.reduce((s, x) => s + (x - mean) ** 2, 0) / arr.length;
-    const sd = Math.sqrt(variance);
-    if (sd > 1e-9) {
-      allThemes.forEach(t => { scores[t] = (scores[t] - mean) / sd; });
-    }
-  }
-
-  // Поправка на надёжность темы (Gallup: "theme reliabilities used as
-  // subsidiary ranking factors") — Table 3 отчёта
-  if (typeof THEME_RELIABILITY !== 'undefined') {
-    const rel = THEME_RELIABILITY;
-    if (cfg.reliabilityMode === 'shrink') {
-      const arr = allThemes.map(t => scores[t]);
-      const mean = arr.reduce((s, x) => s + x, 0) / arr.length;
-      allThemes.forEach(t => {
-        const r = rel[t] !== undefined ? rel[t] : 0.65;
-        scores[t] = mean + (scores[t] - mean) * r;
-      });
-    } else {
-      allThemes.forEach(t => {
-        const r = rel[t] !== undefined ? rel[t] : 0.65;
-        scores[t] *= r;
-      });
-    }
-  }
-
+  Object.keys(sum).forEach(t => { scores[t] = denom[t] > 0 ? sum[t] / denom[t] : 0; });
   return scores;
 }
 
