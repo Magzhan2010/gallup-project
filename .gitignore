@@ -36,3 +36,9 @@ Thumbs.db
 
 .vercel
 .env*
+
+# Личные данные учеников (пароли, почты, ссылки на отчёты) — НИКОГДА не коммитить
+data_gallup_raw.csv
+data_psychometry_raw.csv
+gallup_links.json
+raw_data/
