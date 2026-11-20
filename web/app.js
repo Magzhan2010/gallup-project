@@ -35,6 +35,8 @@ function startTest() {
   }
   document.getElementById('welcome').classList.add('hidden');
   document.getElementById('test').classList.remove('hidden');
+  document.getElementById('header-meta').textContent = 'Идёт тест';
+  window.scrollTo(0, 0);
   renderQuestion();
 }
 
@@ -106,8 +108,9 @@ function finishTest() {
   }
   document.getElementById('test').classList.add('hidden');
   document.getElementById('results').classList.remove('hidden');
+  window.scrollTo(0, 0);
   renderResults();
-  document.getElementById('header-meta').textContent = 'Готово ✓';
+  document.getElementById('header-meta').textContent = 'Результат готов';
 }
 // =============================================================================
 // АЛГОРИТМ СКОРИНГА v3 (собирается build_v3.py, проверка — leave-one-out)
@@ -161,86 +164,108 @@ function ranksFromScores(scores) {
 // ОТОБРАЖЕНИЕ РЕЗУЛЬТАТОВ
 // =============================================================================
 
+
+const DOMAIN_CLASS = {
+  "Executing": "d-exec", "Influencing": "d-infl",
+  "Relationship Building": "d-rel", "Strategic Thinking": "d-strat",
+};
+const DOMAIN_OF = {};
+Object.entries(DOMAINS).forEach(([d, themes]) => themes.forEach(t => { DOMAIN_OF[t] = d; }));
+const themeName = t => t; // названия талантов — на английском, как в отчёте Gallup
+const domainClass = t => DOMAIN_CLASS[DOMAIN_OF[t]] || '';
+
+// Мозаика 34 талантов. Без ranks — витрина на главной (по доменам),
+// с ranks — результат: яркость клетки зависит от места таланта.
+function renderMosaic(container, ranks) {
+  if (!container) return;
+  container.innerHTML = '';
+  const rankOf = t => ranks ? ranks.find(r => r.theme === t).rank : null;
+  Object.entries(DOMAINS).forEach(([domain, themes]) => {
+    const col = document.createElement('div');
+    col.className = 'mcol ' + DOMAIN_CLASS[domain];
+    const list = ranks ? [...themes].sort((a, b) => rankOf(a) - rankOf(b)) : themes;
+    list.forEach(theme => {
+      const tile = document.createElement('div');
+      tile.className = 'tile';
+      tile.innerHTML = `<span>${escapeHtml(themeName(theme))}</span>`;
+      if (ranks) {
+        const rank = rankOf(theme);
+        tile.style.setProperty('--o', (1 - (rank - 1) / 33 * 0.82).toFixed(2));
+        tile.style.setProperty('--delay', ((rank - 1) * 0.035).toFixed(3) + 's');
+        tile.title = `${theme} — место ${rank}`;
+        if (rank <= 5) {
+          tile.classList.add('is-top');
+          tile.insertAdjacentHTML('beforeend', `<b class="rank-badge">${rank}</b>`);
+        }
+      }
+      col.appendChild(tile);
+    });
+    container.appendChild(col);
+  });
+  if (ranks) {
+    container.classList.remove('reveal');
+    void container.offsetWidth;
+    container.classList.add('reveal');
+  }
+}
+
 function renderResults() {
   const scores = calculateScores(state.answers);
   const ranks = ranksFromScores(scores);
-  const top5 = ranks.slice(0, 5);
 
-  // TOP-5 как большие карточки
-  const topGrid = document.getElementById('top-grid');
-  topGrid.innerHTML = '';
-  top5.forEach((t, i) => {
-    const card = document.createElement('div');
-    card.className = 'top5-card';
-    card.innerHTML = `
-      <div class="top5-rank">
-        <span class="top5-rank-num">${t.rank}</span>
-        <span class="top5-rank-label">ранг</span>
-      </div>
-      <div class="top5-content">
-        <div class="top5-name">${escapeHtml(t.theme)}</div>
-        <div class="top5-desc">${escapeHtml(THEME_DESCRIPTIONS[t.theme] || '')}</div>
+  renderMosaic(document.getElementById('result-mosaic'), ranks);
+
+  // Топ-5
+  const topList = document.getElementById('top-grid');
+  topList.innerHTML = '';
+  ranks.slice(0, 5).forEach(t => {
+    const li = document.createElement('li');
+    li.className = domainClass(t.theme);
+    li.innerHTML = `
+      <div class="top5-num">${t.rank}</div>
+      <div>
+        <div class="top5-name">${escapeHtml(themeName(t.theme))}</div>
+        <div class="top5-domain">${escapeHtml(DOMAIN_NAMES[DOMAIN_OF[t.theme]] || '')}</div>
+        <p class="top5-desc">${escapeHtml(THEME_DESCRIPTIONS[t.theme] || '')}</p>
       </div>
     `;
-    topGrid.appendChild(card);
+    topList.appendChild(li);
   });
 
-  // Домены (4 домена Gallup)
-  renderDomains(scores);
+  renderDomains(ranks);
 
-  // Все 34 темы
-  const allThemes = document.getElementById('all-themes');
-  allThemes.innerHTML = '';
+  // Все 34
+  const ladder = document.getElementById('all-themes');
+  ladder.innerHTML = '';
   ranks.forEach(t => {
-    const row = document.createElement('div');
-    row.className = 'theme-row' + (t.rank <= 5 ? ' top5' : '');
-    row.innerHTML = `
-      <span class="theme-name">${escapeHtml(t.theme)}</span>
-      <span class="theme-rank">#${t.rank}</span>
+    const li = document.createElement('li');
+    li.className = domainClass(t.theme) + (t.rank <= 5 ? ' top5' : '');
+    li.innerHTML = `
+      <span class="l-rank">${t.rank}</span>
+      <span class="l-dot" aria-hidden="true"></span>
+      <span>${escapeHtml(themeName(t.theme))}</span>
     `;
-    allThemes.appendChild(row);
+    ladder.appendChild(li);
   });
 
   renderGallupChips();
 }
 
-// =============================================================================
-// ДОМЕНЫ (4 области Gallup)
-// =============================================================================
-// DOMAIN_NAMES приходит из data.js (сгенерировано build_web.py)
-
-const DOMAIN_COLORS = {
-  "Executing":           "#DC1E2D",
-  "Influencing":         "#1976D2",
-  "Relationship Building": "#388E3C",
-  "Strategic Thinking":  "#7B1FA2",
-};
-
-function renderDomains(scores) {
+// Домены: сколько тем домена попало в топ-10
+function renderDomains(ranks) {
   const grid = document.getElementById('domains-grid');
   grid.innerHTML = '';
-
+  const top10 = new Set(ranks.slice(0, 10).map(r => r.theme));
   Object.entries(DOMAINS).forEach(([domain, themes]) => {
-    const domainScores = themes.map(t => scores[t] || 0);
-    const sum = domainScores.reduce((a, b) => a + b, 0);
-    // Нормализуем к шкале 0-100 (грубо): каждый максимум = +24 (12 пар × 2)
-    const maxPossible = themes.length * 24;
-    const pct = Math.max(0, Math.min(100, Math.round((sum + maxPossible) / (2 * maxPossible) * 100)));
-
+    const inTop = themes.filter(t => top10.has(t))
+      .sort((a, b) => ranks.find(r => r.theme === a).rank - ranks.find(r => r.theme === b).rank);
     const card = document.createElement('div');
-    card.className = 'domain-card';
+    card.className = 'domain ' + DOMAIN_CLASS[domain];
     card.innerHTML = `
-      <div class="domain-name">
-        <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${DOMAIN_COLORS[domain]};"></span>
-        ${escapeHtml(DOMAIN_NAMES[domain] || domain)}
-      </div>
-      <div class="domain-bar">
-        <div class="domain-bar-fill" style="width:${pct}%;background:${DOMAIN_COLORS[domain]};"></div>
-      </div>
-      <div class="domain-info">
-        <span>${themes.length} тем</span>
-        <span>${pct}% силы</span>
-      </div>
+      <div class="domain-name">${escapeHtml(DOMAIN_NAMES[domain] || domain)}</div>
+      <div class="domain-count">${inTop.length}<span> из ${themes.length} тем в твоём топ-10</span></div>
+      <div class="domain-pips" aria-hidden="true">${themes.map((t, i) => `<i class="${i < inTop.length ? 'on' : ''}"></i>`).join('')}</div>
+      <div class="domain-themes">${inTop.length ? inTop.map(t => escapeHtml(themeName(t))).join(', ') : 'Нет тем в топ-10'}</div>
     `;
     grid.appendChild(card);
   });
@@ -298,11 +323,11 @@ function updateTextPreview() {
   if (!preview) return;
   const n = state.gallupTop5.length;
   if (n === 0) {
-    preview.innerHTML = '<span style="color: var(--text-muted);">Введите 5 тем — здесь появится предпросмотр.</span>';
+    preview.innerHTML = 'Введи 5 тем — здесь появится то, что распознано.';
   } else if (n < 5) {
-    preview.innerHTML = `<span style="color: var(--warning);">⚠️ Введено ${n}/5 тем. Нужно ещё ${5-n}.</span> Распознано: <b>${state.gallupTop5.map(t => t.theme).join(', ')}</b>`;
+    preview.innerHTML = `<span class="t-warn">Распознано ${n} из 5 тем, нужно ещё ${5-n}:</span> <b>${state.gallupTop5.map(t => escapeHtml(t.theme)).join(', ')}</b>`;
   } else {
-    preview.innerHTML = `<span style="color: var(--success);">✅ Введено 5 тем:</span> <b>${state.gallupTop5.map(t => t.theme).join(' → ')}</b>`;
+    preview.innerHTML = `<span class="t-ok">Распознаны все 5 тем:</span> <b>${state.gallupTop5.map(t => escapeHtml(t.theme)).join(', ')}</b>`;
   }
 }
 
@@ -356,10 +381,10 @@ function handleNameLookup() {
       if (lookupStatus) {
         const dateStr = match.gallup_date ? ` от ${match.gallup_date}` : '';
         lookupStatus.innerHTML = `
-          <div style="background:#E8F5E9;border:1px solid #4CAF50;border-radius:8px;padding:12px 14px;font-size:13px;color:#1B5E20;margin-top:8px;">
-            ✅ <b>Найдено в БД:</b> ${escapeHtml(match.name)}<br>
-            Gallup топ-5: <b>${match.gallup_top5.map(t => escapeHtml(t.theme)).join(' → ')}</b>${dateStr}<br>
-            <span style="font-size:12px;color:#2E7D32;">Эти данные подставлены автоматически — проверять не нужно. Можете пройти тест и нажать «Отправить».</span>
+          <div class="notice ok">
+            Нашли тебя в базе: <b>${escapeHtml(match.name)}</b>${dateStr}.<br>
+            Gallup топ-5: <b>${match.gallup_top5.map(t => escapeHtml(t.theme)).join(', ')}</b>
+            <small>Вводить вручную ничего не нужно — просто нажми «Отправить результат».</small>
           </div>
         `;
       }
@@ -376,9 +401,9 @@ function handleNameLookup() {
       updateMetaVisibility();
       if (lookupStatus) {
         lookupStatus.innerHTML = `
-          <div style="background:#FFF8E6;border:1px solid #F5C842;border-radius:8px;padding:12px 14px;font-size:13px;color:#6B4F00;margin-top:8px;">
-            ⚠️ <b>'${escapeHtml(name)}'</b> не найден в БД Gallup-результатов.<br>
-            <span style="font-size:12px;">Можете ввести свой Gallup топ-5 вручную (ниже) — но это менее надёжно чем если бы было в БД.</span>
+          <div class="notice warn">
+            Имени «${escapeHtml(name)}» нет в базе результатов Gallup.
+            <small>Введи свой топ-5 вручную ниже.</small>
           </div>
         `;
       }
@@ -404,7 +429,7 @@ function handleTextInput() {
     if (unmatched.length > 0) {
       const preview = document.getElementById('gallup-text-preview');
       if (preview) {
-        preview.innerHTML += `<br><span style="color: var(--danger); font-size: 12px;">⚠️ Не распознано: ${unmatched.map(u => `"${u}"`).join(', ')}</span>`;
+        preview.innerHTML += `<br><span class="t-bad">Не распознано: ${unmatched.map(u => `«${escapeHtml(u)}»`).join(', ')}. Проверь написание — названия тем на английском, как в отчёте.</span>`;
       }
     }
   });
@@ -506,7 +531,7 @@ async function submitResults() {
     all_ranks: ranks,
   };
 
-  showSubmitStatus('⏳ Отправляю результат на сервер...', false);
+  showSubmitStatus('Отправляем результат…', false, null, 'info');
 
   try {
     const response = await fetch(API_ENDPOINT, {
@@ -522,39 +547,37 @@ async function submitResults() {
         const predSet = new Set(payload.predicted_top5.slice(0, 5).map(t => t.theme));
         const gallupSet = new Set(payload.gallup_top5.map(t => t.theme));
         const match = [...predSet].filter(t => gallupSet.has(t)).length;
-        const sourceLabel = state.gallupFromDB ? '🟢 из БД' : '⚪ вручную';
-        accuracyMsg = `<br><span style="font-size:13px;">📈 Точность: <b>${match}/5 = ${match*20}%</b> <span style="color:#666;">(${sourceLabel})</span></span>`;
+        const sourceLabel = state.gallupFromDB ? 'данные из базы' : 'введено вручную';
+        accuracyMsg = `<small>Совпало с Gallup: <b>${match} из 5</b> (${sourceLabel}).</small>`;
         if (!state.gallupFromDB && (meta.gallup_confidence === 'guess' || meta.gallup_date === 'gt1y' || meta.gallup_date === 'unknown')) {
-          accuracyMsg += `<br><span style="font-size:12px;color:#B71C1C;">⚠️ Эти данные помечены как ненадёжные — для обучения использоваться не будут.</span>`;
+          accuracyMsg += `<small>Данные помечены как ненадёжные, поэтому в обучение не попадут.</small>`;
         }
       } else {
-        accuracyMsg = `<br><span style="font-size:13px;color:#B71C1C;">⚠️ Gallup-результат НЕ введён — данные бесполезны для обучения.</span>`;
+        accuracyMsg = `<small>Без настоящего топ-5 Gallup этот результат нельзя использовать для проверки точности.</small>`;
       }
       showSubmitStatus(
-        `✅ Отправлено! Данные улетели разработчику в Telegram.${accuracyMsg}`,
-        false
+        `Результат отправлен разработчику.${accuracyMsg}`,
+        false, null, 'ok'
       );
     } else {
       throw new Error(result.error || `HTTP ${response.status}`);
     }
   } catch (e) {
     showSubmitStatus(
-      `⚠️ Сервер недоступен (${escapeHtml(e.message)}).<br>Скачай JSON и отправь разработчику вручную:`,
+      `Не удалось отправить: сервер не ответил (${escapeHtml(e.message)}). Скачай файл с результатом и отправь его разработчику сам.`,
       true,
-      JSON.stringify(payload, null, 2)
+      JSON.stringify(payload, null, 2), 'bad'
     );
   }
 }
 
-function showSubmitStatus(msg, showJson, json) {
+function showSubmitStatus(msg, showJson, json, kind = 'info') {
   const el = document.getElementById('submit-status');
   el.innerHTML = `
-    <div style="background:#F0F7FF;border:1px solid #1976D2;border-radius:8px;padding:14px 18px;font-size:14px;color:#0D2D5C;">
-      ${msg}
-    </div>
+    <div class="notice ${kind}" role="status">${msg}</div>
     ${showJson ? `
-      <textarea readonly style="width:100%;height:200px;margin-top:12px;font-family:monospace;font-size:11px;background:#1a1a1a;color:#0f0;border:1px solid #ccc;padding:10px;border-radius:6px;">${escapeHtml(json)}</textarea>
-      <button class="btn-secondary" style="margin-top:8px;" onclick="downloadJson()">📥 Скачать JSON</button>
+      <textarea readonly class="json-out" aria-label="Результат в формате JSON">${escapeHtml(json)}</textarea>
+      <button class="btn btn-ghost" style="margin-top:10px" onclick="downloadJson()">Скачать файл</button>
     ` : ''}
   `;
   el.classList.remove('hidden');
@@ -622,6 +645,7 @@ function lookupGallupByName(name) {
 // =============================================================================
 
 document.addEventListener('DOMContentLoaded', async () => {
+  renderMosaic(document.getElementById('hero-mosaic'));
   // Загружаем БД Gallup-результатов
   await loadGallupDB();
 
@@ -634,7 +658,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       clearState();
       document.getElementById('results').classList.add('hidden');
       document.getElementById('welcome').classList.remove('hidden');
-      document.getElementById('header-meta').textContent = 'Бесплатный тест · 15 минут';
+      document.getElementById('header-meta').textContent = '200 вопросов';
     }
   });
 

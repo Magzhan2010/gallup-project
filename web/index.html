@@ -3,294 +3,183 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gallup Copy — Тест сильных сторон</title>
+  <title>Gallup Copy — тест сильных сторон</title>
+  <meta name="description" content="200 пар утверждений — и ты узнаешь порядок своих 34 талантов по модели CliftonStrengths.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Onest:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23DC1E2D'/%3E%3Ctext x='50' y='72' font-size='62' font-weight='800' text-anchor='middle' fill='white' font-family='Georgia'%3EG%3C/text%3E%3C/svg%3E">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='15' height='15' rx='3' fill='%237B4BC4'/%3E%3Crect x='17' width='15' height='15' rx='3' fill='%23E8772E'/%3E%3Crect y='17' width='15' height='15' rx='3' fill='%232C7BD6'/%3E%3Crect x='17' y='17' width='15' height='15' rx='3' fill='%232F9E6A'/%3E%3C/svg%3E">
 </head>
 <body>
 
-<div class="container">
+<header class="topbar">
+  <a class="brand" href="./" aria-label="Gallup Copy — на главную">
+    <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    <span class="brand-name">Gallup Copy</span>
+  </a>
+  <span class="topbar-meta" id="header-meta">200 вопросов</span>
+</header>
 
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="brand">
-      <div class="brand-mark">G</div>
-      <div>
-        <div class="brand-name">Gallup Copy</div>
-        <div class="brand-tag">Открой свои 34 таланта</div>
-      </div>
-    </div>
-    <div class="header-meta" id="header-meta">Бесплатный тест · 15 минут</div>
-  </header>
+<main>
 
-  <!-- ============== WELCOME ============== -->
+  <!-- ============== ГЛАВНАЯ ============== -->
   <section id="welcome" class="welcome">
-    <div class="welcome-eyebrow">Бесплатно · Без регистрации</div>
-    <h1>Узнайте свои<br><em>сильные стороны</em></h1>
-    <p class="welcome-sub">
-      Клон теста Gallup CliftonStrengths — за 15 минут определите свои 34 таланта
-      и узнайте, что у вас получается лучше всего.
-    </p>
-
-    <div class="welcome-features">
-      <div class="feature">
-        <div class="feature-num">200</div>
-        <div class="feature-label">пар утверждений для анализа</div>
-      </div>
-      <div class="feature">
-        <div class="feature-num">34</div>
-        <div class="feature-label">темы-таланта (как в Gallup)</div>
-      </div>
-      <div class="feature">
-        <div class="feature-num">5</div>
-        <div class="feature-label">ваших топ-сильных сторон в результате</div>
-      </div>
-    </div>
-
-    <div class="welcome-disclaimer">
-      Это экспериментальная версия. В среднем ~2.7 из 5 тем топ-5 и ~6 из 10 тем топ-10 совпадают с оригинальным Gallup (проверка на 11 людях).
-      Используйте как ориентир, не как истину в последней инстанции.
-    </div>
-
-    <button id="start-btn" class="btn-primary btn-lg">
-      Начать тест →
-    </button>
-  </section>
-
-  <!-- ============== TEST ============== -->
-  <section id="test" class="hidden">
-    <div class="test-progress">
-      <div class="progress-info">
-        <span><span class="progress-q" id="q-current">5</span> из 200 вопросов</span>
-        <span id="progress-pct">2%</span>
-      </div>
-      <div class="progress-bar">
-        <div id="progress-fill" class="progress-fill"></div>
-      </div>
-    </div>
-
-    <div class="question-card">
-      <h2 class="question-title">Какое утверждение описывает вас лучше?</h2>
-
-      <div class="statements">
-        <button class="statement" id="stmt-left" data-side="left">
-          <div class="statement-badge">А</div>
-          <div class="statement-text" id="left-text"></div>
-          <div class="statement-hint">Нажмите, если это про вас</div>
-        </button>
-
-        <button class="statement" id="stmt-right" data-side="right">
-          <div class="statement-badge">Б</div>
-          <div class="statement-text" id="right-text"></div>
-          <div class="statement-hint">Нажмите, если это про вас</div>
-        </button>
-      </div>
-
-      <div class="scale-section">
-        <div class="scale-labels">
-          <span class="scale-side-label"><span class="letter">А</span> Полностью левое</span>
-          <span class="scale-side-label">Полностью правое <span class="letter">Б</span></span>
-        </div>
-        <div class="scale-buttons" id="scale">
-          <button data-val="1" class="scale-btn">
-            <span class="scale-btn-num">1</span>
-            <span class="scale-btn-desc">Совсем А</span>
-          </button>
-          <button data-val="2" class="scale-btn">
-            <span class="scale-btn-num">2</span>
-            <span class="scale-btn-desc">Скорее А</span>
-          </button>
-          <button data-val="3" class="scale-btn">
-            <span class="scale-btn-num">3</span>
-            <span class="scale-btn-desc">Одинаково</span>
-          </button>
-          <button data-val="4" class="scale-btn">
-            <span class="scale-btn-num">4</span>
-            <span class="scale-btn-desc">Скорее Б</span>
-          </button>
-          <button data-val="5" class="scale-btn">
-            <span class="scale-btn-num">5</span>
-            <span class="scale-btn-desc">Совсем Б</span>
-          </button>
-        </div>
-      </div>
-
-      <div class="test-nav">
-        <button id="prev-btn" class="btn-secondary">← Назад</button>
-        <button id="finish-btn" class="btn-primary hidden">Получить результат →</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============== RESULTS ============== -->
-  <section id="results" class="hidden">
-
-    <div class="results-hero">
-      <div class="results-eyebrow">Ваш результат</div>
-      <h1>Ваши сильные стороны</h1>
-      <p>Топ-5 талантов на основе ваших ответов, плюс ранг всех 34 тем.</p>
-    </div>
-
-    <div class="top5-grid" id="top-grid"></div>
-
-    <div class="domains-section">
-      <h3 class="section-title">Сильные стороны по доменам</h3>
-      <div class="domains-grid" id="domains-grid"></div>
-    </div>
-
-    <div class="all-themes-section">
-      <h3 class="section-title">Все 34 темы</h3>
-      <div class="all-themes" id="all-themes"></div>
-    </div>
-
-    <div class="gallup-section">
-      <h3>У вас есть результат Gallup?</h3>
-      <p class="gallup-desc">
-        Если вы проходили оригинальный Gallup CliftonStrengths — введите своё имя.
-        Система автоматически найдёт ваш Gallup-результат в базе данных.
+    <div class="welcome-text">
+      <h1>Какие из&nbsp;34 талантов сильнее всего в&nbsp;тебе?</h1>
+      <p class="lead">
+        Ответь на 200 пар утверждений — и тест расставит все 34 таланта по порядку,
+        как это делает Gallup CliftonStrengths. Таланты делятся на четыре домена:
+        как ты действуешь, влияешь, строишь отношения и думаешь.
       </p>
 
-      <!-- Поиск по имени -->
-      <div style="background: var(--bg-subtle); border-radius: 12px; padding: 20px; margin: 16px 0;">
-        <p style="font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 8px;">
-          👤 Введите ваше имя/ID как в Gallup-отчёте
-        </p>
-        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
-          Например: <code style="background: var(--bg-card); padding: 2px 6px; border-radius: 4px; font-size: 12px;">Alexandr-34</code> или <code style="background: var(--bg-card); padding: 2px 6px; border-radius: 4px; font-size: 12px;">Madina-34</code>
-        </p>
-        <input
-          id="user-name"
-          type="text"
-          placeholder="Имя как в Gallup-отчёте..."
-          style="width: 100%; padding: 12px; border: 1.5px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 15px; background: var(--bg-card); color: var(--text);"
-        />
+      <ul class="legend" aria-label="Домены талантов">
+        <li class="d-exec">Исполнение</li>
+        <li class="d-infl">Влияние</li>
+        <li class="d-rel">Отношения</li>
+        <li class="d-strat">Стратегия</li>
+      </ul>
+
+      <div class="welcome-actions">
+        <button id="start-btn" class="btn btn-ink btn-lg">Начать тест</button>
+        <p class="hint">Ответы сохраняются в браузере — можно закрыть вкладку и продолжить позже.</p>
+      </div>
+
+      <p class="note">
+        Это экспериментальная копия. В проверке на 11 учениках в среднем 2–3 темы из топ-5
+        совпали с настоящим отчётом Gallup. Смотри на результат как на подсказку, а не приговор.
+      </p>
+    </div>
+
+    <div class="mosaic mosaic-hero" id="hero-mosaic" aria-hidden="true"></div>
+  </section>
+
+  <!-- ============== ТЕСТ ============== -->
+  <section id="test" class="test hidden" aria-live="polite">
+    <div class="progress">
+      <div class="progress-track"><div id="progress-fill" class="progress-fill"></div></div>
+      <div class="progress-text">
+        <span>Вопрос <b id="q-current">1</b> из 200</span>
+        <span>Отвечено <b id="progress-pct">0%</b></span>
+      </div>
+    </div>
+
+    <h2 class="question">Что про тебя больше?</h2>
+
+    <div class="duel">
+      <button class="side side-left" id="stmt-left" data-side="left">
+        <span class="side-key">A</span>
+        <span class="side-text" id="left-text"></span>
+      </button>
+      <button class="side side-right" id="stmt-right" data-side="right">
+        <span class="side-key">Б</span>
+        <span class="side-text" id="right-text"></span>
+      </button>
+    </div>
+
+    <div class="scale" id="scale" role="group" aria-label="Насколько утверждение про тебя">
+      <button data-val="1" class="scale-btn s-far"><span class="dotbox"><span class="dot"></span></span><span class="lbl">Точно A</span></button>
+      <button data-val="2" class="scale-btn s-near"><span class="dotbox"><span class="dot"></span></span><span class="lbl">Скорее A</span></button>
+      <button data-val="3" class="scale-btn s-mid"><span class="dotbox"><span class="dot"></span></span><span class="lbl">Поровну</span></button>
+      <button data-val="4" class="scale-btn s-near"><span class="dotbox"><span class="dot"></span></span><span class="lbl">Скорее Б</span></button>
+      <button data-val="5" class="scale-btn s-far"><span class="dotbox"><span class="dot"></span></span><span class="lbl">Точно Б</span></button>
+    </div>
+
+    <div class="test-nav">
+      <button id="prev-btn" class="btn btn-ghost">Назад</button>
+      <p class="keys">Клавиши: <kbd>1</kbd>–<kbd>5</kbd> для шкалы, <kbd>A</kbd> и <kbd>D</kbd> для сторон</p>
+      <button id="finish-btn" class="btn btn-ink hidden">Показать результат</button>
+    </div>
+  </section>
+
+  <!-- ============== РЕЗУЛЬТАТ ============== -->
+  <section id="results" class="results hidden">
+
+    <div class="results-head">
+      <div>
+        <h1>Твои сильные стороны</h1>
+        <p class="lead">Каждая колонка — один домен, таланты в ней идут от сильного к слабому. Чем ярче клетка, тем выше талант в общем списке. Пять самых сильных обведены и пронумерованы.</p>
+      </div>
+      <div class="mosaic mosaic-result" id="result-mosaic"></div>
+    </div>
+
+    <h2 class="block-title">Топ-5</h2>
+    <ol class="top5" id="top-grid"></ol>
+
+    <h2 class="block-title">Домены</h2>
+    <div class="domains" id="domains-grid"></div>
+
+    <h2 class="block-title">Все 34 таланта по порядку</h2>
+    <ol class="ladder" id="all-themes"></ol>
+
+    <!-- ===== Сравнение с настоящим Gallup ===== -->
+    <div class="compare">
+      <h2>Проходил настоящий Gallup?</h2>
+      <p class="compare-sub">
+        Отправь свой настоящий топ-5 — так мы проверим, насколько точен тест, и сделаем его лучше.
+      </p>
+
+      <div class="field">
+        <label for="user-name">Имя, как в отчёте Gallup</label>
+        <input id="user-name" type="text" autocomplete="name" placeholder="Например, Alexandr-34">
         <div id="name-lookup-status"></div>
       </div>
 
-      <!-- Если не найдено в БД — показать ручной ввод -->
       <div id="gallup-section">
-      <p style="font-size: 13px; color: var(--text-muted); margin: 16px 0 8px;">
-        Если вас нет в БД, введите Gallup-результат вручную:
-      </p>
+        <div class="field">
+          <label for="gallup-text-input">Твой топ-5 из отчёта Gallup</label>
+          <textarea id="gallup-text-input" rows="3" placeholder="Strategic, Achiever, Context, Deliberative, Discipline"></textarea>
+          <div id="gallup-text-preview" class="preview"></div>
+        </div>
 
-      <!-- Способ 1: текстовый ввод (самый быстрый) -->
-      <div style="background: var(--bg-subtle); border-radius: 12px; padding: 20px; margin: 16px 0;">
-        <p style="font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 8px;">
-          ✏️ Способ 1: вставьте текстом (быстрее всего)
-        </p>
-        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
-          Из вашего Gallup-отчёта скопируйте 5 тем через запятую или с новой строки. Например:<br>
-          <code style="background: var(--bg-card); padding: 2px 6px; border-radius: 4px; font-size: 12px;">Strategic, Achiever, Context, Deliberative, Discipline</code>
-        </p>
-        <textarea
-          id="gallup-text-input"
-          placeholder="Вставьте сюда 5 тем из Gallup..."
-          style="width: 100%; min-height: 80px; padding: 10px; border: 1.5px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 14px; resize: vertical; background: var(--bg-card); color: var(--text);"
-        ></textarea>
-        <div id="gallup-text-preview" style="margin-top: 10px; font-size: 13px;"></div>
-      </div>
+        <details class="fold">
+          <summary>Выбрать темы кликами</summary>
+          <p class="fold-text">Нажимай темы по порядку: первая — твоя тема №1.</p>
+          <div id="gallup-chips" class="chips"></div>
+        </details>
 
-      <!-- Способ 2: клик по чипам -->
-      <details style="margin: 12px 0;">
-        <summary style="font-size: 13px; font-weight: 600; color: var(--text); cursor: pointer; padding: 8px 0;">
-          🖱️ Способ 2: выбрать кликами (если не хотите копировать)
-        </summary>
-        <div style="padding: 12px 0;">
-          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
-            Кликните 5 тем в нужном порядке. Первая выбранная = ваш топ-1, и т.д.
+        <details class="fold">
+          <summary>Где найти свой топ-5?</summary>
+          <p class="fold-text">
+            В PDF-отчёте Gallup это первая страница — список из пяти тем под заголовком
+            «Top 5 Themes» или «Сильные стороны». Скопируй пять названий в поле выше.
+            Не помнишь точно — лучше пропусти: неверные данные портят обучение.
           </p>
-          <div id="gallup-chips" class="theme-chips"></div>
-        </div>
-      </details>
+        </details>
 
-      <!-- Подсказка где найти Gallup-результат -->
-      <details style="margin: 16px 0; background: #FFF8E6; border: 1px solid #F5C842; border-radius: 8px; padding: 12px 16px;">
-        <summary style="font-size: 13px; font-weight: 600; color: #6B4F00; cursor: pointer;">
-          📖 Где найти свой Gallup-топ-5?
-        </summary>
-        <div style="margin-top: 10px; font-size: 13px; color: #6B4F00; line-height: 1.6;">
-          <p><b>В PDF-отчёте Gallup ищите раздел «Top 5 Themes» или «Сильные стороны».</b></p>
-          <p>Обычно это на первой странице отчёта, выглядит так:</p>
-          <div style="background: white; border: 1px solid #F5C842; padding: 10px 14px; border-radius: 6px; margin: 8px 0; font-family: monospace; font-size: 12px;">
-            <div>1. Strategic</div>
-            <div>2. Achiever</div>
-            <div>3. Context</div>
-            <div>4. Deliberative</div>
-            <div>5. Discipline</div>
-          </div>
-          <p>Скопируйте эти 5 названий и вставьте в поле выше.</p>
-          <p><b>Если не помните точно</b> — лучше пропустите, чем ввести неправильно. Мусорные данные испортят обучение.</p>
+        <div id="gallup-meta" class="meta hidden">
+          <fieldset>
+            <legend>Когда ты проходил Gallup?</legend>
+            <label class="opt"><input type="radio" name="gallup-date" value="lt3m"><span>Меньше 3 месяцев назад</span></label>
+            <label class="opt"><input type="radio" name="gallup-date" value="3to6m"><span>3–6 месяцев назад</span></label>
+            <label class="opt"><input type="radio" name="gallup-date" value="6to12m"><span>6–12 месяцев назад</span></label>
+            <label class="opt"><input type="radio" name="gallup-date" value="gt1y"><span>Больше года назад</span></label>
+            <label class="opt"><input type="radio" name="gallup-date" value="unknown"><span>Не помню</span></label>
+          </fieldset>
+          <fieldset>
+            <legend>Насколько ты уверен в этом топ-5?</legend>
+            <label class="opt"><input type="radio" name="gallup-confidence" value="pdf"><span>Только что посмотрел в PDF</span></label>
+            <label class="opt"><input type="radio" name="gallup-confidence" value="good"><span>Хорошо помню</span></label>
+            <label class="opt"><input type="radio" name="gallup-confidence" value="rough"><span>Помню примерно</span></label>
+            <label class="opt"><input type="radio" name="gallup-confidence" value="guess"><span>Угадываю</span></label>
+          </fieldset>
+          <p class="fold-text">Свежие и проверенные по PDF ответы учитываются при обучении с бо́льшим весом.</p>
         </div>
-      </details>
-
-      <!-- Метаданные для качества данных -->
-      <div id="gallup-meta" class="hidden" style="background: var(--bg-subtle); border-radius: 12px; padding: 20px; margin: 16px 0;">
-        <p style="font-size: 13px; font-weight: 600; margin-bottom: 12px;">
-          📅 Когда сдавали оригинальный Gallup?
-        </p>
-        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
-          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 6px 10px; background: var(--bg-card); border-radius: 6px; border: 1.5px solid transparent;">
-            <input type="radio" name="gallup-date" value="lt3m" style="margin: 0;">
-            <span>Менее 3 месяцев назад <span style="color: var(--success); font-size: 11px;">✓ идеально</span></span>
-          </label>
-          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 6px 10px; background: var(--bg-card); border-radius: 6px; border: 1.5px solid transparent;">
-            <input type="radio" name="gallup-date" value="3to6m" style="margin: 0;">
-            <span>3-6 месяцев назад <span style="color: var(--text-muted); font-size: 11px;">ок</span></span>
-          </label>
-          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 6px 10px; background: var(--bg-card); border-radius: 6px; border: 1.5px solid transparent;">
-            <input type="radio" name="gallup-date" value="6to12m" style="margin: 0;">
-            <span>6-12 месяцев назад <span style="color: var(--warning); font-size: 11px;">⚠️ могли измениться</span></span>
-          </label>
-          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 6px 10px; background: var(--bg-card); border-radius: 6px; border: 1.5px solid transparent;">
-            <input type="radio" name="gallup-date" value="gt1y" style="margin: 0;">
-            <span>Больше года назад <span style="color: var(--danger); font-size: 11px;">❌ ненадёжно</span></span>
-          </label>
-          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 6px 10px; background: var(--bg-card); border-radius: 6px; border: 1.5px solid transparent;">
-            <input type="radio" name="gallup-date" value="unknown" style="margin: 0;">
-            <span>Не помню / давно <span style="color: var(--danger); font-size: 11px;">❌ ненадёжно</span></span>
-          </label>
-        </div>
-
-        <p style="font-size: 13px; font-weight: 600; margin: 16px 0 12px;">
-          🎯 Насколько вы уверены в введённом топ-5?
-        </p>
-        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
-          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 6px 10px; background: var(--bg-card); border-radius: 6px; border: 1.5px solid transparent;">
-            <input type="radio" name="gallup-confidence" value="pdf" style="margin: 0;">
-            <span>Только что посмотрел в PDF-отчёте <span style="color: var(--success); font-size: 11px;">✓ лучший вариант</span></span>
-          </label>
-          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 6px 10px; background: var(--bg-card); border-radius: 6px; border: 1.5px solid transparent;">
-            <input type="radio" name="gallup-confidence" value="good" style="margin: 0;">
-            <span>Помню хорошо <span style="color: var(--text-muted); font-size: 11px;">ок</span></span>
-          </label>
-          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 6px 10px; background: var(--bg-card); border-radius: 6px; border: 1.5px solid transparent;">
-            <input type="radio" name="gallup-confidence" value="rough" style="margin: 0;">
-            <span>Примерно помню <span style="color: var(--warning); font-size: 11px;">⚠️ могут быть ошибки</span></span>
-          </label>
-          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 6px 10px; background: var(--bg-card); border-radius: 6px; border: 1.5px solid transparent;">
-            <input type="radio" name="gallup-confidence" value="guess" style="margin: 0;">
-            <span>Угадываю <span style="color: var(--danger); font-size: 11px;">❌ не использовать</span></span>
-          </label>
-        </div>
-        <p style="font-size: 12px; color: var(--text-muted); margin-top: 12px;">
-          💡 Эти данные помогают нам взвешивать качество. Свежие + подтверждённые данные идут в обучение с большим весом. Старые/ненадёжные используются только для оценки.
-        </p>
-      </div>
       </div>
 
       <div class="submit-row">
-        <button id="submit-btn" class="btn-primary">📤 Отправить результат</button>
-        <button id="restart-btn" class="btn-secondary">🔄 Пройти заново</button>
+        <button id="submit-btn" class="btn btn-ink">Отправить результат</button>
+        <button id="restart-btn" class="btn btn-ghost">Пройти заново</button>
       </div>
-      <div id="submit-status" class="hidden" style="margin-top: 16px;"></div>
+      <div id="submit-status" class="hidden"></div>
     </div>
   </section>
 
-  <footer class="site-footer">
-    <p>Открытый проект · Тест считается прямо в браузере. Ответы отправляются разработчику только если вы нажмёте «Отправить результат».</p>
-  </footer>
+</main>
 
-</div>
+<footer class="footer">
+  <p>Открытый учебный проект. Тест считается прямо в браузере. Ответы отправляются разработчику, только если ты нажмёшь «Отправить результат».</p>
+</footer>
 
 <script src="data.js"></script>
 <script src="app.js"></script>
